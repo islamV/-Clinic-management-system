@@ -10,7 +10,7 @@ module com.clinicmanagementsystem.clinicmanagementsystem {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.base;
+    requires java.sql;
 
     opens com.clinicmanagementsystem.clinicmanagementsystem to javafx.fxml;
     exports com.clinicmanagementsystem.clinicmanagementsystem;
