@@ -11,6 +11,7 @@ module com.clinicmanagementsystem.clinicmanagementsystem {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+    requires io.github.cdimascio.dotenv.java;
 
     opens com.clinicmanagementsystem.clinicmanagementsystem to javafx.fxml;
     exports com.clinicmanagementsystem.clinicmanagementsystem;
