@@ -1,5 +1,6 @@
 package com.clinicmanagementsystem.clinicmanagementsystem;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
@@ -67,13 +68,21 @@ public class LoginPageController implements Initializable {
 
                     switch (role) {
                         case "Admin":
-                            //switch
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/clinicmanagementsystem/clinicmanagementsystem/FXML/Admin-Dashboard.fxml"));
+                                Parent root = loader.load();
+                                Stage currentStage = (Stage) email_txtfld.getScene().getWindow();
+                                currentStage.setScene(new Scene(root));
+                                currentStage.show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case "Doctor":
-                            //switch
+                            System.out.println("Doctor Dashboard");
                             break;
                         case "Patient":
-                            //switch
+                            System.out.println("Patient Dashboard");
                             break;
                         default:
                             System.out.println("An error has occurred");
@@ -99,7 +108,7 @@ public class LoginPageController implements Initializable {
     public void switchToRegisterPage() throws SQLException, ClassNotFoundException {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("D:\\Programming\\clinic-management-system\\src\\main\\java\\com\\clinicmanagementsystem\\clinicmanagementsystem\\RegistrationPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/clinicmanagementsystem/clinicmanagementsystem/FXML/RegistrationPage.fxml"));
             Parent root = loader.load();
 
 

@@ -27,15 +27,15 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="email_txtfld" layoutX="168.0" layoutY="270.0" prefHeight="26.0" prefWidth="353.0" />
+      <TextField fx:id="email_txtfld" layoutX="168.0" layoutY="270.0" onAction="#login" prefHeight="26.0" prefWidth="353.0" />
       <Label layoutX="81.0" layoutY="305.0" text="Password" textFill="#324d91">
          <font>
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="login_btn" layoutX="252.0" layoutY="393.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" text="Login" textFill="#324d91" />
-      <PasswordField fx:id="password_txtfld" layoutX="196.0" layoutY="306.0" prefHeight="26.0" prefWidth="325.0" />
-      <Hyperlink fx:id="dont_hyperlink" layoutX="214.0" layoutY="540.0" text="Don't have account? Click here" textFill="#324d91" />
+      <Button fx:id="login_btn" layoutX="252.0" layoutY="393.0" mnemonicParsing="false" onAction="#login" prefHeight="30.0" prefWidth="99.0" text="Login" textFill="#324d91" />
+      <PasswordField fx:id="password_txtfld" layoutX="196.0" layoutY="306.0" onAction="#login" prefHeight="26.0" prefWidth="325.0" />
+      <Hyperlink fx:id="dont_hyperlink" layoutX="214.0" layoutY="540.0" onAction="#switchToRegisterPage" text="Don't have account? Click here" textFill="#324d91" />
       <Label layoutX="158.0" layoutY="153.0" text="We hope you're doing well" textFill="#324d91">
          <font>
             <Font name="Arial Black" size="20.0" />
