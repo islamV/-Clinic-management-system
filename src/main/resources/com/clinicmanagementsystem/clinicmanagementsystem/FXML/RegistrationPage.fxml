@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.RegistrationPageController">
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.RegistrationPageController">
    <children>
       <ImageView fitHeight="606.0" fitWidth="606.0" layoutX="-3.0" layoutY="-3.0" pickOnBounds="true">
          <image>
@@ -33,25 +34,25 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="name_txtfld" layoutX="167.0" layoutY="194.0" onAction="#register" prefHeight="26.0" prefWidth="353.0" />
+      <TextField fx:id="name_txtfld" layoutX="167.0" layoutY="194.0" prefHeight="26.0" prefWidth="353.0" />
       <Label layoutX="80.0" layoutY="228.0" text="Email" textFill="#324d91">
          <font>
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="email_txtfld" layoutX="167.0" layoutY="230.0" onAction="#register" prefHeight="26.0" prefWidth="353.0" />
+      <TextField fx:id="email_txtfld" layoutX="167.0" layoutY="230.0" prefHeight="26.0" prefWidth="353.0" />
       <Label layoutX="79.0" layoutY="264.0" text="Phone Number" textFill="#324d91">
          <font>
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="phone_txtfld" layoutX="254.0" layoutY="266.0" onAction="#register" prefHeight="26.0" prefWidth="266.0" />
+      <TextField fx:id="phone_txtfld" layoutX="254.0" layoutY="266.0" prefHeight="26.0" prefWidth="266.0" />
       <Label layoutX="79.0" layoutY="300.0" text="Age" textFill="#324d91">
          <font>
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="age_txtfld" layoutX="254.0" layoutY="301.0" onAction="#register" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="age_txtfld" layoutX="254.0" layoutY="301.0" prefHeight="26.0" prefWidth="150.0" />
       <Label layoutX="79.0" layoutY="336.0" text="Gender" textFill="#324d91">
          <font>
             <Font name="Arial Black" size="20.0" />
@@ -68,9 +69,9 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="register_btn" layoutX="252.0" layoutY="482.0" mnemonicParsing="false" onAction="#register" prefHeight="30.0" prefWidth="99.0" text="Register" textFill="#324d91" />
-      <PasswordField fx:id="password_txtfld" layoutX="198.0" layoutY="372.0" onAction="#register" prefHeight="26.0" prefWidth="330.0" />
-      <PasswordField fx:id="repassword_txtfld" layoutX="292.0" layoutY="408.0" onAction="#register" prefHeight="26.0" prefWidth="236.0" />
-      <Hyperlink fx:id="already_hyperlink" layoutX="202.0" layoutY="540.0" onAction="#switchToLoginPage" text="Already have an account? Click here" textFill="#324d91" />
+      <Button fx:id="register_btn" layoutX="252.0" layoutY="482.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" text="Register" textFill="#324d91" />
+      <PasswordField fx:id="password_txtfld" layoutX="198.0" layoutY="372.0" prefHeight="26.0" prefWidth="330.0" />
+      <PasswordField fx:id="repasswrod_txtfld" layoutX="292.0" layoutY="408.0" prefHeight="26.0" prefWidth="236.0" />
+      <Hyperlink fx:id="already_hyperlink" layoutX="202.0" layoutY="540.0" text="Already have an account? Click here" textFill="#324d91" />
    </children>
 </AnchorPane>
