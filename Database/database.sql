@@ -1,3 +1,6 @@
+CREATE DATABASE clinic_management;
+USE clinic_management;
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,

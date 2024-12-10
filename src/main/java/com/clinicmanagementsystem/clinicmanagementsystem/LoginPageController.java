@@ -67,7 +67,11 @@ public class LoginPageController implements Initializable {
 
                     switch (role) {
                         case "Admin":
-                            //switch
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/Admin-Dashboard.fxml"));
+                            Parent root = loader.load();
+                            Stage currentStage = (Stage) email_txtfld.getScene().getWindow();
+                            currentStage.setScene(new Scene(root));
+                            currentStage.show();
                             break;
                         case "Doctor":
                             //switch
@@ -99,13 +103,9 @@ public class LoginPageController implements Initializable {
     public void switchToRegisterPage() throws SQLException, ClassNotFoundException {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("D:\\Programming\\clinic-management-system\\src\\main\\java\\com\\clinicmanagementsystem\\clinicmanagementsystem\\RegistrationPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/RegistrationPage.fxml"));
             Parent root = loader.load();
-
-
             Stage currentStage = (Stage) email_txtfld.getScene().getWindow();
-
-
             currentStage.setScene(new Scene(root));
             currentStage.show();
         } catch (Exception e) {
