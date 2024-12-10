@@ -6,9 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import javax.swing.*;
 import java.sql.*;
+import java.util.Optional;
 
 public class CRUDDoctorsAdminController {
 
@@ -79,10 +82,10 @@ public class CRUDDoctorsAdminController {
 
             doctorList.clear();
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+                int id = resultSet.getInt("user_id");
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
-                String speciality = resultSet.getString("speciality");
+                String speciality = resultSet.getString("specialty");
                 String gender = resultSet.getString("gender");
                 String phoneNumber = resultSet.getString("phone_number");
                 String email = resultSet.getString("email_address");
@@ -106,73 +109,86 @@ public class CRUDDoctorsAdminController {
 
 
     public void ADD(ActionEvent event) {
-        try {
-            String name = promptForInput("Doctor Name", "Enter the doctor's name:");
-            if (name == null) return;
+        JTextField nameField = new JTextField();
+        JTextField emailField = new JTextField();
+        JTextField phoneField = new JTextField();
+        JTextField ageField = new JTextField();
+        JTextField specialtyField = new JTextField();
 
-            String email = promptForInput("Email Address", "Enter the doctor's email:");
-            if (email == null) return;
+        JCheckBox maleCheckBox = new JCheckBox("Male");
+        JCheckBox femaleCheckBox = new JCheckBox("Female");
 
-            String phone = promptForInput("Phone Number", "Enter the doctor's phone number:");
-            if (phone == null) return;
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(maleCheckBox);
+        genderGroup.add(femaleCheckBox);
 
-            String ageInput = promptForInput("Age", "Enter the doctor's age:");
-            if (ageInput == null) return;
-            int age = Integer.parseInt(ageInput);
+        Object[] fields = {
+                "Doctor Name:", nameField,
+                "Email Address:", emailField,
+                "Phone Number:", phoneField,
+                "Age:", ageField,
+                "Gender:", maleCheckBox, femaleCheckBox,
+                "Specialty:", specialtyField
+        };
+        int option = JOptionPane.showConfirmDialog(null, fields, "Add New Doctor", JOptionPane.OK_CANCEL_OPTION);
 
-            String gender = promptForChoice("Gender", "Select the doctor's gender:", "Male", "Female");
-            if (gender == null) return;
+        if (option == JOptionPane.OK_OPTION) {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String phone = phoneField.getText();
+            String ageInput = ageField.getText();
+            String gender = maleCheckBox.isSelected() ? "Male" : (femaleCheckBox.isSelected() ? "Female" : "");
+            String specialty = specialtyField.getText();
 
-            String specialty = promptForInput("Specialty", "Enter the doctor's specialty:");
-            if (specialty == null) return;
-
-            DatabaseConnection conn = new DatabaseConnection();
-            try (Connection connection = conn.getConnection();
-                 PreparedStatement userStatement = connection.prepareStatement(
-                         "INSERT INTO users (name, email_address, phone_number, gender, age, role, password) VALUES (?, ?, ?, ?, ?, 'Doctor', '12345678')",
-                         Statement.RETURN_GENERATED_KEYS);
-                 PreparedStatement doctorStatement = connection.prepareStatement(
-                         "INSERT INTO doctors (user_id, specialty) VALUES (?, ?)")) {
-
-                userStatement.setString(1, name);
-                userStatement.setString(2, email);
-                userStatement.setString(3, phone);
-                userStatement.setString(4, gender);
-                userStatement.setInt(5, age);
-
-                userStatement.executeUpdate();
-
-                ResultSet generatedKeys = userStatement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int userId = generatedKeys.getInt(1);
-
-                    doctorStatement.setInt(1, userId);
-                    doctorStatement.setString(2, specialty);
-
-                    doctorStatement.executeUpdate();
-                } else {
-                    showErrorDialog("Database Error", "Failed to retrieve user ID for the new doctor.");
-                    return;
-                }
-
-                showSuccessDialog("Doctor Added", "The new doctor has been successfully added.");
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || ageInput.isEmpty() || gender.isEmpty() || specialty.isEmpty()) {
+                showErrorDialog("Input Error", "Please fill in all the fields.");
+                return;
             }
-        } catch (NumberFormatException e) {
-            showErrorDialog("Input Error", "Age must be a valid number.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            showErrorDialog("Error", "An unexpected error occurred.");
+
+            try {
+                int age = Integer.parseInt(ageInput);
+
+                DatabaseConnection conn = new DatabaseConnection();
+                try (Connection connection = conn.getConnection();
+                     PreparedStatement userStatement = connection.prepareStatement(
+                             "INSERT INTO users (name, email_address, phone_number, gender, age, role, password) VALUES (?, ?, ?, ?, ?, 'Doctor', '12345678')",
+                             Statement.RETURN_GENERATED_KEYS);
+                     PreparedStatement doctorStatement = connection.prepareStatement(
+                             "INSERT INTO doctors (user_id, specialty) VALUES (?, ?)")) {
+
+                    userStatement.setString(1, name);
+                    userStatement.setString(2, email);
+                    userStatement.setString(3, phone);
+                    userStatement.setString(4, gender);
+                    userStatement.setInt(5, age);
+
+                    userStatement.executeUpdate();
+
+                    ResultSet generatedKeys = userStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int userId = generatedKeys.getInt(1);
+
+                        doctorStatement.setInt(1, userId);
+                        doctorStatement.setString(2, specialty);
+
+                        doctorStatement.executeUpdate();
+                        showSuccessDialog("Doctor Added", "The new doctor has been successfully added.");
+                    } else {
+                        showErrorDialog("Database Error", "Failed to retrieve user ID for the new doctor.");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                showErrorDialog("Input Error", "Age must be a valid number.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                showErrorDialog("Error", "An unexpected error occurred.");
+            }
+        } else {
+            System.out.println("User cancelled the operation.");
         }
+        initialize();
     }
 
-
-    private String promptForInput(String title, String message) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(title);
-        dialog.setHeaderText(null);
-        dialog.setContentText(message);
-        return dialog.showAndWait().orElse(null);
-    }
 
     private void showSuccessDialog(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -180,14 +196,6 @@ public class CRUDDoctorsAdminController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private String promptForChoice(String title, String message, String... options) {
-        ChoiceDialog<String> dialog = new ChoiceDialog<>(options[0], options);
-        dialog.setTitle(title);
-        dialog.setHeaderText(null);
-        dialog.setContentText(message);
-        return dialog.showAndWait().orElse(null);
     }
 
     public void Delete(ActionEvent event) {
@@ -242,82 +250,56 @@ public class CRUDDoctorsAdminController {
             return;
         }
 
-        TextInputDialog nameDialog = new TextInputDialog(selectedDoctor.getName());
-        nameDialog.setTitle("Edit Doctor");
-        nameDialog.setHeaderText("Edit Doctor's Name");
-        nameDialog.setContentText("Name:");
-        String newName = nameDialog.showAndWait().orElse(null);
+        JTextField nameField = new JTextField(selectedDoctor.getName());
+        JTextField emailField = new JTextField(selectedDoctor.getEmail());
+        JTextField phoneField = new JTextField(selectedDoctor.getPhone());
+        JTextField ageField = new JTextField(String.valueOf(selectedDoctor.getAge()));
+        JTextField specialtyField = new JTextField(selectedDoctor.getSpeciality());
 
-        if (newName == null || newName.trim().isEmpty()) {
-            showErrorDialog("Invalid Input", "Name cannot be empty.");
-            return;
+        JCheckBox maleCheckBox = new JCheckBox("Male", selectedDoctor.getGender().equals("Male"));
+        JCheckBox femaleCheckBox = new JCheckBox("Female", selectedDoctor.getGender().equals("Female"));
+
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(maleCheckBox);
+        genderGroup.add(femaleCheckBox);
+
+        Object[] fields = {
+                "Doctor Name:", nameField,
+                "Email Address:", emailField,
+                "Phone Number:", phoneField,
+                "Age:", ageField,
+                "Gender:", maleCheckBox, femaleCheckBox,
+                "Specialty:", specialtyField
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, fields, "Edit Doctor", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String newName = nameField.getText();
+            String newEmail = emailField.getText();
+            String newPhone = phoneField.getText();
+            String ageInput = ageField.getText();
+            String gender = maleCheckBox.isSelected() ? "Male" : (femaleCheckBox.isSelected() ? "Female" : "");
+            String newSpecialty = specialtyField.getText();
+
+            if (newName.isEmpty() || newEmail.isEmpty() || newPhone.isEmpty() || ageInput.isEmpty() || gender.isEmpty() || newSpecialty.isEmpty()) {
+                showErrorDialog("Input Error", "Please fill in all the fields.");
+                return;
+            }
+
+            try {
+                int newAge = Integer.parseInt(ageInput);
+                updateDoctorAndUser(selectedDoctor.getId(), newName, newAge, newEmail, newPhone, gender, newSpecialty);
+            } catch (NumberFormatException e) {
+                showErrorDialog("Invalid Input", "Age must be a valid number.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                showErrorDialog("Error", "An unexpected error occurred.");
+            }
+        } else {
+            System.out.println("User cancelled the operation.");
         }
-
-        TextInputDialog ageDialog = new TextInputDialog(String.valueOf(selectedDoctor.getAge()));
-        ageDialog.setTitle("Edit Doctor");
-        ageDialog.setHeaderText("Edit Doctor's Age");
-        ageDialog.setContentText("Age:");
-        String newAgeStr = ageDialog.showAndWait().orElse(null);
-
-        if (newAgeStr == null || newAgeStr.trim().isEmpty()) {
-            showErrorDialog("Invalid Input", "Age cannot be empty.");
-            return;
-        }
-        
-        int newAge;
-        try {
-            newAge = Integer.parseInt(newAgeStr);
-        } catch (NumberFormatException e) {
-            showErrorDialog("Invalid Input", "Please enter a valid age.");
-            return;
-        }
-
-        TextInputDialog emailDialog = new TextInputDialog(selectedDoctor.getEmail());
-        emailDialog.setTitle("Edit Doctor");
-        emailDialog.setHeaderText("Edit Doctor's Email");
-        emailDialog.setContentText("Email:");
-        String newEmail = emailDialog.showAndWait().orElse(null);
-
-        if (newEmail == null || newEmail.trim().isEmpty()) {
-            showErrorDialog("Invalid Input", "Email cannot be empty.");
-            return;
-        }
-
-        TextInputDialog phoneDialog = new TextInputDialog(selectedDoctor.getPhone());
-        phoneDialog.setTitle("Edit Doctor");
-        phoneDialog.setHeaderText("Edit Doctor's Phone Number");
-        phoneDialog.setContentText("Phone:");
-        String newPhone = phoneDialog.showAndWait().orElse(null);
-
-        if (newPhone == null || newPhone.trim().isEmpty()) {
-            showErrorDialog("Invalid Input", "Phone number cannot be empty.");
-            return;
-        }
-
-        ChoiceDialog<String> genderDialog = new ChoiceDialog<>(selectedDoctor.getGender(), "Male", "Female");
-        genderDialog.setTitle("Edit Doctor");
-        genderDialog.setHeaderText("Edit Doctor's Gender");
-        genderDialog.setContentText("Gender:");
-        String newGender = genderDialog.showAndWait().orElse(null);
-
-        if (newGender == null) {
-            showErrorDialog("Invalid Input", "Gender cannot be empty.");
-            return;
-        }
-
-        TextInputDialog specialtyDialog = new TextInputDialog(selectedDoctor.getSpeciality());
-        specialtyDialog.setTitle("Edit Doctor");
-        specialtyDialog.setHeaderText("Edit Doctor's Specialty");
-        specialtyDialog.setContentText("Specialty:");
-        String newSpecialty = specialtyDialog.showAndWait().orElse(null);
-
-        if (newSpecialty == null || newSpecialty.trim().isEmpty()) {
-            showErrorDialog("Invalid Input", "Specialty cannot be empty.");
-            return;
-        }
-
-        updateDoctorAndUser(selectedDoctor.getId(), newName, newAge, newEmail, newPhone, newGender, newSpecialty);
     }
+
 
     private void updateDoctorAndUser(int userId, String name, int age, String email, String phone, String gender, String specialty) {
         DatabaseConnection conn = new DatabaseConnection();
