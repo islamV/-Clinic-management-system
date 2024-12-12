@@ -25,7 +25,8 @@ DROP TABLE IF EXISTS `doctors`;
 CREATE TABLE `doctors` (
   `doctor_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `specialty` varchar(255) NOT NULL,
+  ADD COLUMN `specialty_id` int NOT NULL,
+  ADD CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`) ON DELETE CASCADE;
   PRIMARY KEY (`doctor_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
