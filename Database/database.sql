@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `doctors`;
 CREATE TABLE `doctors` (
   `doctor_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  ADD COLUMN `specialty_id` int NOT NULL,
+   `specialty_id` int NOT NULL,
   ADD CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`) ON DELETE CASCADE;
   PRIMARY KEY (`doctor_id`),
   KEY `user_id` (`user_id`),
@@ -58,6 +58,7 @@ CREATE TABLE `appointments` (
   `doctor_id` int NOT NULL,
   `schedule_id` int NOT NULL,
   `queue_number` int NOT NULL,
+  `appointment_limit` int DEFAULT NULL,
   `status` enum('Pending','Confirmed','Cancelled','Completed') NOT NULL DEFAULT 'Pending',
   PRIMARY KEY (`appointment_id`),
   KEY `patient_id` (`patient_id`),
