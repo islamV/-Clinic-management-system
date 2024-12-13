@@ -24,6 +24,13 @@ INSERT INTO `users` (`name`, `email_address`, `phone_number`, `gender`, `age`, `
 VALUES ('admin', 'admin@admin.com', NULL, 'male', 30, 'Admin', '123456');
 
 
+DROP TABLE IF EXISTS `specialties`;
+CREATE TABLE `specialties`
+(
+    `specialty_id` int          NOT NULL AUTO_INCREMENT,
+    `name`         varchar(255) NOT NULL,
+    PRIMARY KEY (`specialty_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `doctors`;
 CREATE TABLE `doctors` (
@@ -32,7 +39,7 @@ CREATE TABLE `doctors` (
    `specialty_id` int NOT NULL,
   PRIMARY KEY (`doctor_id`),
   KEY `user_id` (`user_id`),
-    CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`) ON DELETE CASCADE;
+ CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`) ON DELETE CASCADE,
   CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
