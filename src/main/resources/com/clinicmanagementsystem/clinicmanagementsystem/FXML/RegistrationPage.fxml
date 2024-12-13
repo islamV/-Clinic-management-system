@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.RegistrationPageController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.RegistrationPageController">
    <children>
       <ImageView fitHeight="606.0" fitWidth="606.0" layoutX="-3.0" layoutY="-3.0" pickOnBounds="true">
          <image>
@@ -69,9 +68,9 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="register_btn" layoutX="252.0" layoutY="482.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" text="Register" textFill="#324d91" />
+      <Button fx:id="register_btn" layoutX="252.0" layoutY="482.0" mnemonicParsing="false" onAction="#register" prefHeight="30.0" prefWidth="99.0" text="Register" textFill="#324d91" />
       <PasswordField fx:id="password_txtfld" layoutX="198.0" layoutY="372.0" prefHeight="26.0" prefWidth="330.0" />
-      <PasswordField fx:id="repasswrod_txtfld" layoutX="292.0" layoutY="408.0" prefHeight="26.0" prefWidth="236.0" />
-      <Hyperlink fx:id="already_hyperlink" layoutX="202.0" layoutY="540.0" text="Already have an account? Click here" textFill="#324d91" />
+      <PasswordField fx:id="repassword_txtfld" layoutX="292.0" layoutY="408.0" prefHeight="26.0" prefWidth="236.0" />
+      <Hyperlink fx:id="already_hyperlink" layoutX="202.0" layoutY="540.0" onAction="#switchToLoginPage" text="Already have an account? Click here" textFill="#324d91" />
    </children>
 </AnchorPane>
