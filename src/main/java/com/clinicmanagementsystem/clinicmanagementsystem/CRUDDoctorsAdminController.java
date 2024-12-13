@@ -67,7 +67,9 @@ public class CRUDDoctorsAdminController {
                 "    u.gender,\n" +
                 "    u.phone_number,\n" +
                 "    u.email_address,\n" +
-        "    d.specialty\n" +
+
+                "    d.specialty\n" +
+
                 "FROM \n" +
                 "    doctors d\n" +
                 "JOIN \n" +

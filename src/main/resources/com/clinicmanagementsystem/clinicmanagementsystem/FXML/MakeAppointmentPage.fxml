@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="690.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.MakeAppointmentController">
+   <children>
+      <ImageView fitHeight="690.0" fitWidth="600.0" layoutX="1.0" pickOnBounds="true" smooth="false">
+         <image>
+            <Image url="@../../../../../java/com/clinicmanagementsystem/clinicmanagementsystem/blurred-abstract-background-interior-view-looking-out-toward-empty-office-lobby-entrance-doors-glass-curtain-wall-with-frame.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="120.0" layoutY="70.0" text="Make Appointment">
+         <font>
+            <Font name="Arial Bold" size="40.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="231.0" text="select specialty:">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="295.0" text="select doctor:">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="40.0" layoutY="364.0" text="select schedul:">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font></Label>
+      <ComboBox fx:id="specialtyComboBox" layoutX="210.0" layoutY="230.0" prefHeight="26.0" prefWidth="195.0" promptText="specialty" />
+      <ComboBox fx:id="doctorsComboBox" layoutX="210.0" layoutY="294.0" prefHeight="26.0" prefWidth="195.0" promptText="doctors" />
+      <ComboBox fx:id="schedulesComboBox" layoutX="210.0" layoutY="363.0" prefHeight="26.0" prefWidth="195.0" promptText="schedules" />
+      <Button fx:id="specialtySaveButton" layoutX="453.0" layoutY="231.0" mnemonicParsing="false" onAction="#specialtyButton" prefHeight="26.0" prefWidth="69.0" text="save" />
+      <Button fx:id="doctorSaveButton" layoutX="454.0" layoutY="294.0" mnemonicParsing="false" onAction="#doctorButton" prefHeight="26.0" prefWidth="70.0" text="save" />
+      <Button fx:id="schedulSaveButton" layoutX="455.0" layoutY="363.0" mnemonicParsing="false" onAction="#schedulButton" prefHeight="26.0" prefWidth="70.0" text="save" />
+      <Button fx:id="submitAppointment" layoutX="185.0" layoutY="460.0" mnemonicParsing="false" onAction="#submitButton" prefHeight="31.0" prefWidth="267.0" text="submit">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  */
 public class LoginPageController implements Initializable {
 
-    
+
     @FXML
     private Hyperlink dont_hyperlink;
 
@@ -64,6 +64,8 @@ public class LoginPageController implements Initializable {
                     alert.showAndWait();
 
                     String role = result.getString("role");
+                    userData.id = result.getInt("user_id");
+                    userData.email = email_txtfld.getText();
 
                     switch (role) {
                         case "Admin":
@@ -77,7 +79,12 @@ public class LoginPageController implements Initializable {
                             //switch
                             break;
                         case "Patient":
-                            //switch
+                            FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/patient-home-page.fxml"));
+                            Parent patientRoot = patientLoader.load();
+                            Stage patientStage = (Stage) email_txtfld.getScene().getWindow();
+                            patientStage.setScene(new Scene(patientRoot));
+                            patientStage.show();
+
                             break;
                         default:
                             System.out.println("An error has occurred");
@@ -117,6 +124,10 @@ public class LoginPageController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         email_txtfld.clear();
         password_txtfld.clear();
+
+    }
+
+
     }    
-    
+
 }

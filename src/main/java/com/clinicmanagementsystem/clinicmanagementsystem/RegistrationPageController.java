@@ -40,13 +40,13 @@ public class RegistrationPageController implements Initializable {
 
     @FXML
     private PasswordField repasswrod_txtfld;
-    
+
     @FXML
     private Hyperlink already_hyperlink;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }
