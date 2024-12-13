@@ -57,6 +57,7 @@ CREATE TABLE `appointments` (
   `doctor_id` int NOT NULL,
   `schedule_id` int NOT NULL,
   `queue_number` int NOT NULL,
+  `appointment_limit` int DEFAULT NULL,
   `status` enum('Pending','Confirmed','Cancelled','Completed') NOT NULL DEFAULT 'Pending',
   PRIMARY KEY (`appointment_id`),
   KEY `patient_id` (`patient_id`),
