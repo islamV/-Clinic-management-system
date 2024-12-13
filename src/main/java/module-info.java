@@ -12,7 +12,7 @@ module com.clinicmanagementsystem.clinicmanagementsystem {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires io.github.cdimascio.dotenv.java;
-
+    requires java.desktop;
     opens com.clinicmanagementsystem.clinicmanagementsystem to javafx.fxml;
     exports com.clinicmanagementsystem.clinicmanagementsystem;
 }

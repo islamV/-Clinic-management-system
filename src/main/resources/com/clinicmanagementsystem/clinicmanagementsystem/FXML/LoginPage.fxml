@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="606.0" fitWidth="606.0" layoutX="-3.0" layoutY="-3.0" pickOnBounds="true">
          <image>
-            <Image url="@blurred-abstract-background-interior-view-looking-out-toward-empty-office-lobby-entrance-doors-glass-curtain-wall-with-frame.jpg" />
+            <Image url="@../../../../../java/com/clinicmanagementsystem/clinicmanagementsystem/blurred-abstract-background-interior-view-looking-out-toward-empty-office-lobby-entrance-doors-glass-curtain-wall-with-frame.jpg" />
          </image>
       </ImageView>
       <Label layoutX="132.0" layoutY="109.0" text="Welcome Back!" textFill="#324d91">
@@ -33,9 +33,9 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="login_btn" layoutX="252.0" layoutY="393.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" text="Login" textFill="#324d91" />
+      <Button fx:id="login_btn" onAction="#login" layoutX="252.0" layoutY="393.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="99.0" text="Login" textFill="#324d91" />
       <PasswordField fx:id="password_txtfld" layoutX="196.0" layoutY="306.0" prefHeight="26.0" prefWidth="325.0" />
-      <Hyperlink fx:id="dont_hyperlink" layoutX="214.0" layoutY="540.0" text="Don't have account? Click here" textFill="#324d91" />
+      <Hyperlink fx:id="dont_hyperlink" onAction="#switchToRegisterPage" layoutX="214.0" layoutY="540.0" text="Don't have account? Click here" textFill="#324d91" />
       <Label layoutX="158.0" layoutY="153.0" text="We hope you're doing well" textFill="#324d91">
          <font>
             <Font name="Arial Black" size="20.0" />
