@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="690.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="690.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.PatientHomePageController">
    <children>
       <ImageView fitHeight="690.0" fitWidth="600.0" layoutY="-1.0" pickOnBounds="true" smooth="false">
          <image>
@@ -23,12 +23,12 @@
          <font>
             <Font name="Arial Bold" size="40.0" />
          </font></Label>
-      <Button fx:id="makeAppointmentButton" layoutX="163.0" layoutY="381.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="273.0" text="make new  Appointment">
+      <Button fx:id="makeAppointmentButton" layoutX="163.0" layoutY="381.0" mnemonicParsing="false" onAction="#makeButton" prefHeight="31.0" prefWidth="273.0" text="make new  Appointment">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="historyAppointmentButton" layoutX="163.0" layoutY="426.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="273.0" text="history of  Appointments">
+      <Button fx:id="historyAppointmentButton" layoutX="163.0" layoutY="426.0" mnemonicParsing="false" onAction="#historyButton" prefHeight="31.0" prefWidth="273.0" text="history of  Appointments">
          <font>
             <Font size="15.0" />
          </font>
