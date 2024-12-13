@@ -84,6 +84,7 @@ public class LoginPageController implements Initializable {
                             Stage patientStage = (Stage) email_txtfld.getScene().getWindow();
                             patientStage.setScene(new Scene(patientRoot));
                             patientStage.show();
+
                             break;
                         default:
                             System.out.println("An error has occurred");
@@ -123,6 +124,10 @@ public class LoginPageController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         email_txtfld.clear();
         password_txtfld.clear();
+
     }
+
+
+    }    
 
 }

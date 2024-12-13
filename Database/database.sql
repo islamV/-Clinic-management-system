@@ -1,7 +1,8 @@
-CREATE
-DATABASE clinic_management;
-USE
-clinic_management;
+
+
+CREATE DATABASE clinic_management;
+USE clinic_management;
+
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
@@ -25,16 +26,15 @@ VALUES ('admin', 'admin@admin.com', NULL, 'male', 30, 'Admin', '123456');
 
 
 DROP TABLE IF EXISTS `doctors`;
-CREATE TABLE `doctors`
-(
-    `doctor_id`    int NOT NULL AUTO_INCREMENT,
-    `user_id`      int NOT NULL,
-    `specialty_id` int NOT NULL,
-    `appointment_limit` int DEFAULT 10,
-    PRIMARY KEY (`doctor_id`),
-    KEY            `user_id` (`user_id`),
-    CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE
-        CASCADE
+CREATE TABLE `doctors` (
+  `doctor_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+   `specialty_id` int NOT NULL,
+  PRIMARY KEY (`doctor_id`),
+  KEY `user_id` (`user_id`),
+    CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`) ON DELETE CASCADE;
+  CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -55,9 +55,6 @@ CREATE TABLE `specification`
     `name`         varchar(255) NOT NULL,
     PRIMARY KEY (`specialty_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-ADD CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specification` (`specialty_id`) ON DELETE CASCADE;
-
 
 DROP TABLE IF EXISTS `appointments`;
 CREATE TABLE `appointments`
