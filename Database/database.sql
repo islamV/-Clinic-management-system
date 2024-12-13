@@ -56,13 +56,6 @@ CREATE TABLE `schedules`
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `specification`;
-CREATE TABLE `specification`
-(
-    `specialty_id` int          NOT NULL AUTO_INCREMENT,
-    `name`         varchar(255) NOT NULL,
-    PRIMARY KEY (`specialty_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 DROP TABLE IF EXISTS `appointments`;
 CREATE TABLE `appointments`
 (
