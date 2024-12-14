@@ -2,11 +2,18 @@ package com.clinicmanagementsystem.clinicmanagementsystem;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +41,14 @@ public class MakeAppointmentController {
 
     @FXML
     private Button submitAppointment;
-
+    @FXML
+    private void handleBackButton(ActionEvent event)throws IOException {
+        FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/patient-home-page.fxml"));
+        Parent patientRoot = patientLoader.load();
+        Stage patientStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the stage from the event source
+        patientStage.setScene(new Scene(patientRoot));
+        patientStage.show();
+    }
     private int doctorId = -1;
     private int specialtyId = -1;
     private int schedulId = -1;

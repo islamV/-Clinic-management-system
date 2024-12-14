@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="690.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.AppointmentsHistoryPage">
+    <!-- TableView with two columns -->
+    <TableView fx:id="tableView" layoutX="50" layoutY="50" prefHeight="250.0" prefWidth="600.0">
+        <columns>
+            <TableColumn fx:id="column1" text="Column 1" prefWidth="200" />
+            <TableColumn fx:id="column2" text="Column 2" prefWidth="200" />
+        </columns>
+    </TableView>
+
+    <!-- Back button -->
+    <Button text="Back" layoutX="100" layoutY="550.0" prefWidth="150"  onAction="#handleBackButton" />
+</AnchorPane>

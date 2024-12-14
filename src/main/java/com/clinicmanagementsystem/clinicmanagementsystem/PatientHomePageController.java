@@ -18,10 +18,14 @@ public class PatientHomePageController {
     @FXML
     private Button makeAppointmentButton;
 
-    public void historyButton(){
 
+    public void historyButton(ActionEvent event) throws IOException {
+        FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/AppointmentsHistoryPage.fxml"));
+        Parent patientRoot = patientLoader.load();
+        Stage patientStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the stage from the event source
+        patientStage.setScene(new Scene(patientRoot));
+        patientStage.show();
     }
-
     public void makeButton(ActionEvent event) throws IOException {
         FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/MakeAppointmentPage.fxml"));
         Parent patientRoot = patientLoader.load();
@@ -29,4 +33,5 @@ public class PatientHomePageController {
         patientStage.setScene(new Scene(patientRoot));
         patientStage.show();
     }
+
 }
