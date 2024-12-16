@@ -3,15 +3,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="690.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.AppointmentsHistoryPage">
-    <!-- TableView with two columns -->
-    <TableView fx:id="tableView" layoutX="50" layoutY="50" prefHeight="250.0" prefWidth="600.0">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.AppointmentsHistoryPage">
+    <TableView fx:id="tableView" layoutX="20.0" layoutY="20.0" prefHeight="400.0" prefWidth="760.0">
         <columns>
-            <TableColumn fx:id="column1" text="Column 1" prefWidth="200" />
-            <TableColumn fx:id="column2" text="Column 2" prefWidth="200" />
+            <TableColumn fx:id="appointmentIdColumn" text="Appointment ID" prefWidth="50.0" />
+            <TableColumn fx:id="patientNameColumn" text="Patient Name" prefWidth="100.0" />
+            <TableColumn fx:id="doctorNameColumn" text="Doctor Name" prefWidth="100.0" />            <TableColumn fx:id="queueNumberColumn" text="Queue Number" prefWidth="100.0" />
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100.0" />
+            <TableColumn fx:id="scheduleDayColumn"  text="Day" prefWidth="100.0" />
+            <TableColumn fx:id="createdAtColumn"  text="Created at" prefWidth="150.0" />
+
+
         </columns>
     </TableView>
-
-    <!-- Back button -->
-    <Button text="Back" layoutX="100" layoutY="550.0" prefWidth="150"  onAction="#handleBackButton" />
+    <Button text="Back" layoutX="20.0" layoutY="440.0" onAction="#handleBackButton" />
 </AnchorPane>

@@ -90,7 +90,7 @@ public class MakeAppointmentController {
 
     private void loadSpecialties() {
         specialties = FXCollections.observableArrayList();
-        String query = "SELECT specialty_id, name FROM specification";
+        String query = "SELECT specialty_id, name FROM specialties";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement stat = con.prepareStatement(query);
              ResultSet re = stat.executeQuery()) {
