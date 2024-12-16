@@ -73,3 +73,21 @@ CREATE TABLE `appointments`
     CONSTRAINT `appointments_ibfk_2` FOREIGN KEY (`doctor_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
     CONSTRAINT `appointments_ibfk_3` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE reports (
+ report_id INT AUTO_INCREMENT PRIMARY KEY, -- Primary key for the reports table
+ appointment_id INT ,            -- Foreign key related to appointments
+ doctor_id INT ,                 -- Foreign key related to users (doctors)
+  report_content LONGTEXT NOT NULL,       -- Content of the report
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp for report creation
+
+ CONSTRAINT fk_appointment FOREIGN KEY (appointment_id)
+ REFERENCES appointments(appointment_id)
+ ON DELETE CASCADE,
+
+   CONSTRAINT fk_doctor FOREIGN KEY (doctor_id)
+    REFERENCES users(user_id)
+    ON DELETE SET NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
