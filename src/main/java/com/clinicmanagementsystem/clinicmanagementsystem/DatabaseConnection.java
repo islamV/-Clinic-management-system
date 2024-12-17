@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-      static Dotenv env = Dotenv.load();
+    static Dotenv env = Dotenv.load();
     private static final String DB_URL = env.get("DB_URL");
     private static final String DB_USERNAME = env.get("DB_USERNAME");
     private static final String DB_PASSWORD = env.get("DB_PASSWORD");
