@@ -75,10 +75,11 @@ CREATE TABLE `schedules` (
         'Saturday',
         'Sunday'
     ) NOT NULL,
+    `status` BOOLEAN DEFAULT TRUE,
     PRIMARY KEY (`schedule_id`),
     KEY `doctor_id` (`doctor_id`),
     CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `appointments`;
 
