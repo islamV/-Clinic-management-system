@@ -1,5 +1,5 @@
+DROP DATABASE IF EXISTS clinic_management;
 CREATE DATABASE clinic_management;
-
 USE clinic_management;
 
 DROP TABLE IF EXISTS `users`;
@@ -52,7 +52,6 @@ CREATE TABLE `doctors` (
   `doctor_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
    `specialty_id` int NOT NULL,
-   `appointment_limit` int NOT NULL ,
   PRIMARY KEY (`doctor_id`),
   KEY `user_id` (`user_id`),
  CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`) ON DELETE CASCADE,
@@ -75,6 +74,7 @@ CREATE TABLE `schedules` (
         'Saturday',
         'Sunday'
     ) NOT NULL,
+    `appointment_limit` int NOT NULL ,
     PRIMARY KEY (`schedule_id`),
     KEY `doctor_id` (`doctor_id`),
     CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE

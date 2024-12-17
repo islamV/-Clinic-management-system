@@ -57,12 +57,6 @@ public class LoginPageController implements Initializable {
             } else {
                 if (result.next()) {
                     //if correct inputs
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Successful Login");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Logged in successfully!");
-                    alert.showAndWait();
-
                     String role = result.getString("role");
                     userData.id = result.getInt("user_id");
                     userData.email = email_txtfld.getText();
