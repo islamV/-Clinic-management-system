@@ -1,20 +1,23 @@
 package com.clinicmanagementsystem.clinicmanagementsystem;
 
+import java.util.List;
+
 public class Doctor {
     private int id;
     private String name;
-    private String speciality;
     private int age;
-    String gender;
-    String phone;
-    String email;
-    public Doctor(int id, String name, int age , String speciality , String gender , String phone , String email) {
+    private String speciality;
+    private String gender;
+    private String phoneNumber;
+    private String email;
+
+    public Doctor(int id, String name, int age, String speciality, String gender, String phoneNumber, String email) {
         this.id = id;
         this.name = name;
-        this.speciality = speciality;
         this.age = age;
+        this.speciality = speciality;
         this.gender = gender;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
         this.email = email;
     }
     public int getId() {
@@ -29,30 +32,29 @@ public class Doctor {
     public void setName(String name) {
         this.name = name;
     }
-    public String getSpeciality() {
-        return speciality;
-    }
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
-    }
     public int getAge() {
         return age;
     }
     public void setAge(int age) {
         this.age = age;
     }
-
+    public String getSpeciality() {
+        return speciality;
+    }
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
     public String getGender() {
         return gender;
     }
     public void setGender(String gender) {
         this.gender = gender;
     }
-    public String getPhone() {
-        return phone;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
     public String getEmail() {
         return email;
@@ -61,3 +63,4 @@ public class Doctor {
         this.email = email;
     }
 }
+
