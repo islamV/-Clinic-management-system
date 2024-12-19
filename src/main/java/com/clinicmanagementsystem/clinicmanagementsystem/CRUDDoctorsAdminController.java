@@ -70,7 +70,6 @@ public class CRUDDoctorsAdminController {
         loadDoctorsFromDatabase();
     }
 
-
     private void loadDoctorsFromDatabase() {
         String sql = """
         SELECT 

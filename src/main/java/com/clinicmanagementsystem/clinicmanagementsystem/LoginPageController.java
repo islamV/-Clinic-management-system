@@ -4,7 +4,6 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 import javafx.fxml.*;
-import java.util.Date;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -70,7 +69,11 @@ public class LoginPageController implements Initializable {
                             currentStage.show();
                             break;
                         case "Doctor":
-                            //switch
+                            FXMLLoader doctorLoader = new FXMLLoader(getClass().getResource("FXML/Doctor-Dashboard.fxml"));
+                            Parent doctorRoot = doctorLoader.load();
+                            Stage doctorStage = (Stage) email_txtfld.getScene().getWindow();
+                            doctorStage.setScene(new Scene(doctorRoot));
+                            doctorStage.show();
                             break;
                         case "Patient":
                             FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/patient-home-page.fxml"));
