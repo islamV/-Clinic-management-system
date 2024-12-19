@@ -20,6 +20,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import static com.clinicmanagementsystem.clinicmanagementsystem.SecurityController.hashPassword;
+
+
 /**
  * FXML Controller class
  *
@@ -73,7 +76,9 @@ public class RegistrationPageController implements Initializable {
             prepare.setString(4, selectedGender);
             prepare.setString(5, age_txtfld.getText());
             prepare.setString(6, "Patient");
-            prepare.setString(7, password_txtfld.getText());
+            String originalPassword = password_txtfld.getText();
+            String hashedPassword = hashPassword(originalPassword);
+            prepare.setString(7, hashedPassword);
 
             Alert alert;
             if (name_txtfld.getText().isEmpty() || email_txtfld.getText().isEmpty() || phone_txtfld.getText().isEmpty() ||
@@ -83,6 +88,14 @@ public class RegistrationPageController implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("All fields are required.");
                 alert.showAndWait();
+            } else if (isEmailDuplicate(email_txtfld.getText())) {
+
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("The email is already registered. Please use a different email.");
+                alert.showAndWait();
+
             } else if (password_txtfld.getText().length() < 5) {
 
                 alert = new Alert(Alert.AlertType.ERROR);
@@ -131,6 +144,21 @@ public class RegistrationPageController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public boolean isEmailDuplicate(String email) {
+        String checkEmailSql = "SELECT COUNT(*) FROM users WHERE email_address = ?";
+        try (PreparedStatement checkEmail = con.prepareStatement(checkEmailSql)) {
+            checkEmail.setString(1, email);
+            ResultSet emailResult = checkEmail.executeQuery();
+            if (emailResult.next() && emailResult.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 
     @Override
