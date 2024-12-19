@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700" prefWidth="900" style="-fx-background-color: #eef3fc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.ViewAppointmentsToMakeReportController">
+
+    <top>
+        <!-- Title -->
+        <Label alignment="CENTER" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1E88E5; -fx-padding: 20;" text="Doctor's Appointments" />
+    </top>
+
+    <center>
+        <!-- Main Content -->
+        <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30;">
+            <!-- Appointments Table -->
+            <TableView fx:id="appointmentsTable" prefHeight="400" prefWidth="850" style="-fx-border-color: #1E88E5; -fx-border-width: 2px; -fx-border-radius: 10px;">
+                <columns>
+
+                    <!-- Appointment ID Column -->
+                    <TableColumn fx:id="appointmentIdColumn" prefWidth="200" text="Appointment ID" />
+
+                    <!-- Patient Name Column -->
+                    <TableColumn fx:id="patientNameColumn" prefWidth="450" text="Patient Name" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+    <bottom>
+        <!-- Actions Section -->
+        <HBox alignment="CENTER" spacing="40" style="-fx-padding: 20;">
+            <Button fx:id="clearButton" onAction="#handleClear" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-family: Arial; -fx-border-radius: 5px; -fx-padding: 10 20;" text="Clear" />
+            <Button fx:id="generateReportButton" onAction="#handleGenerateReport" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-family: Arial; -fx-border-radius: 5px; -fx-padding: 10 20;" text="Generate Report" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

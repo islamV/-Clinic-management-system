@@ -52,7 +52,6 @@ CREATE TABLE `doctors` (
   `doctor_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
    `specialty_id` int NOT NULL,
-   `appointment_limit` int NOT NULL ,
   PRIMARY KEY (`doctor_id`),
   KEY `user_id` (`user_id`),
  CONSTRAINT `doctors_specialty_fk` FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`) ON DELETE CASCADE,
@@ -66,6 +65,8 @@ DROP TABLE IF EXISTS `schedules`;
 CREATE TABLE `schedules` (
     `schedule_id` int NOT NULL AUTO_INCREMENT,
     `doctor_id` int NOT NULL,
+    `appointment_limit` int NOT NULL ,
+    `remain_limit` int NOT NULL,
     `day` ENUM(
         'Monday',
         'Tuesday',
@@ -75,7 +76,6 @@ CREATE TABLE `schedules` (
         'Saturday',
         'Sunday'
     ) NOT NULL,
-    `status` BOOLEAN DEFAULT TRUE,
     PRIMARY KEY (`schedule_id`),
     KEY `doctor_id` (`doctor_id`),
     CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE
@@ -106,12 +106,12 @@ CREATE TABLE `appointments` (
     CONSTRAINT `appointments_ibfk_3` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-CREATE TABLE reports (
- report_id INT AUTO_INCREMENT PRIMARY KEY, -- Primary key for the reports table
- appointment_id INT ,            -- Foreign key related to appointments
- doctor_id INT ,                 -- Foreign key related to users (doctors)
-  report_content LONGTEXT NOT NULL,       -- Content of the report
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp for report creation
+CREATE TABLE `reports` (
+    report_id INT AUTO_INCREMENT PRIMARY KEY, -- Primary key for the reports table
+    appointment_id INT ,            -- Foreign key related to appointments
+    doctor_id INT ,                 -- Foreign key related to users (doctors)
+    report_content LONGTEXT NOT NULL,       -- Content of the report
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp for report creation
 
 
 CONSTRAINT fk_appointment FOREIGN KEY (appointment_id) REFERENCES appointments (appointment_id) ON DELETE CASCADE,
