@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class DoctorDashboardController {
@@ -24,8 +25,12 @@ public class DoctorDashboardController {
     @FXML
     private Button view_schedule_btn;
 
-    public void makeReports(){
-
+    public void makeReports() throws IOException {
+        FXMLLoader Loader = new FXMLLoader(getClass().getResource("FXML/ViewAppointmentsToMakeReport.fxml"));
+        Parent Root = Loader.load();
+        Stage patientStage = (Stage) make_reports_btn.getScene().getWindow();
+        patientStage.setScene(new Scene(Root));
+        patientStage.show();
     }
 
     public void viewReports(){

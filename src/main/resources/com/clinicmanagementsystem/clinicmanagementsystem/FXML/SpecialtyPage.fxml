@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="690.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.SpecialtyPageController">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="11.0" prefHeight="578.0" prefWidth="661.0" spacing="10">
+            <Text style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Manage Specialties" />
+
+            <HBox alignment="CENTER" spacing="10">
+                <TextField fx:id="specialty_txtfld" promptText="Enter specialty name" />
+                <Button fx:id="add_specialty_btn" onAction="#addSpecialty" text="Add Specialty" />
+            </HBox>
+
+            <TableView fx:id="specialty_table" prefHeight="383.0" prefWidth="662.0">
+                <columns>
+                    <TableColumn fx:id="specialty_column" prefWidth="140.00000286102295" text="Specialty Name" />
+                </columns>
+            </TableView>
+
+            <Button fx:id="remove_specialty_btn" onAction="#removeSpecialty" text="Remove Selected Specialty" />
+        </VBox>
+    </children>
+</AnchorPane>

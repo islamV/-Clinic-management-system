@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import static com.clinicmanagementsystem.clinicmanagementsystem.SecurityController.hashPassword;
+
 /**
  * FXML Controller class
  *
@@ -43,7 +45,9 @@ public class LoginPageController implements Initializable {
         try{
             prepare = con.prepareStatement(sql);
             prepare.setString(1, email_txtfld.getText());
-            prepare.setString(2, password_txtfld.getText());
+            String originalPassword = password_txtfld.getText();
+            String hashedPassword = hashPassword(originalPassword);
+            prepare.setString(2, hashedPassword);
             result = prepare.executeQuery();
 
             Alert alert;
@@ -56,6 +60,12 @@ public class LoginPageController implements Initializable {
             } else {
                 if (result.next()) {
                     //if correct inputs
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Successful Login");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Logged in successfully!");
+                    alert.showAndWait();
+
                     String role = result.getString("role");
                     userData.id = result.getInt("user_id");
                     userData.email = email_txtfld.getText();
@@ -81,7 +91,6 @@ public class LoginPageController implements Initializable {
                             Stage patientStage = (Stage) email_txtfld.getScene().getWindow();
                             patientStage.setScene(new Scene(patientRoot));
                             patientStage.show();
-
                             break;
                         default:
                             System.out.println("An error has occurred");

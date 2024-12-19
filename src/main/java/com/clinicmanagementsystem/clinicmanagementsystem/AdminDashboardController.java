@@ -16,11 +16,6 @@ public class AdminDashboardController {
     public Button btnManageDoctors;
     public Button btnLogout;
     public Label lblAdminUsername;
-    public Button btnManageSpecialty;
-    public Button btnManageSchedules;
-
-    public void showspecialtyCrud(ActionEvent event) {
-    }
 
     public void showDoctorCrud(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -28,22 +23,6 @@ public class AdminDashboardController {
         Scene scene = new Scene(fxmlLoader.load(), 690, 600);
         CRUDDoctorsAdminController controller = fxmlLoader.getController();
         controller.initialize();
-        stage.setTitle("Clinic Management System");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void showAppointmentCrud(ActionEvent event) {
-    }
-
-    public void showSchedulesCrud(ActionEvent event) {
-    }
-
-    public void logout(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(AdminDashboardController.class.getResource("FXML/LoginPage.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 690, 600);
-        LoginPageController controller = fxmlLoader.getController();
         stage.setTitle("Clinic Management System");
         stage.setScene(scene);
         stage.show();
