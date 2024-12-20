@@ -31,6 +31,10 @@ public class Appointment {
         this.createdAt = new SimpleStringProperty("Unknown"); // Default value
     }
 
+    public Appointment(int appointmentId, String patientName, Object o) {
+
+    }
+
 
     public int getAppointmentId() {
         return appointmentId.get();
