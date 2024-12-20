@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 
-public class AppointmentsHistoryPage {
+public class AppointmentsHistoryDoctorDashboard {
 
 
     @FXML
@@ -77,14 +77,14 @@ public class AppointmentsHistoryPage {
                JOIN\s
                    users u ON d.user_id = u.user_id
                 WHERE\s
-                   a.patient_id = ?
+                    d.user_id = ?;
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // Set the parameter for the patient ID
-            preparedStatement.setInt(1, userData.id); // Assuming `userData.getId()` returns the patient ID
+          preparedStatement.setInt(1, userData.id); // Assuming `userData.getId()` returns the patient ID
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -112,7 +112,7 @@ public class AppointmentsHistoryPage {
 
     @FXML
     private void handleBackButton(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/patient-home-page.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/Doctor-Dashboard.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
