@@ -14,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  *
  * @author Eng. Mohamed
  */
-public class SpecialtyPageController implements Initializable {
+public class SpecialtyPageController {
 
     @FXML
     private TextField specialty_txtfld;
@@ -142,8 +142,7 @@ public class SpecialtyPageController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize() {
         specialties = FXCollections.observableArrayList();
         specialty_column.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue()));
         specialty_table.setItems(specialties);
