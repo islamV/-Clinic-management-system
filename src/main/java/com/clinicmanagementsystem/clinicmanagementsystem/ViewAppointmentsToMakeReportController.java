@@ -78,7 +78,6 @@ public class ViewAppointmentsToMakeReportController {
                 appointments.add(new Appointment(
                         rs.getInt("appointment_id"),
                         rs.getString("patient_name"),
-
                 ));
             }
         } catch (SQLException e) {
