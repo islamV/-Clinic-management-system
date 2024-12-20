@@ -8,15 +8,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class AppointmentsHistoryPage {
+
+
     @FXML
     private TableView<Appointment> tableView;
     @FXML
@@ -32,10 +34,9 @@ public class AppointmentsHistoryPage {
     @FXML
     private TableColumn<Appointment, String> scheduleDayColumn;
     @FXML
-    private TableColumn<Appointment, LocalDateTime> appointmentDateColumn;
+    private TableColumn<Appointment, String> createdAtColumn;
 
-    private final ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -46,26 +47,14 @@ public class AppointmentsHistoryPage {
         patientNameColumn.setCellValueFactory(new PropertyValueFactory<>("patientName"));
         doctorNameColumn.setCellValueFactory(new PropertyValueFactory<>("doctorName"));
         scheduleDayColumn.setCellValueFactory(new PropertyValueFactory<>("scheduleDay"));
-        appointmentDateColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentDate"));
-
-        // Configure date column formatting
-        appointmentDateColumn.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(DATE_FORMATTER.format(item));
-                }
-            }
-        });
+        createdAtColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
         // Load data from the database
         loadAppointmentsFromDatabase();
     }
 
     private void loadAppointmentsFromDatabase() {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
         String query = """
                 SELECT\s
                    a.appointment_id,\s
@@ -123,25 +112,12 @@ public class AppointmentsHistoryPage {
 
     }
 
-    private void showError(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
     @FXML
-    private void handleBackButton(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/patient-home-page.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            showError("Navigation Error", "Failed to load patient home page: " + e.getMessage());
-            e.printStackTrace();
-        }
+    private void handleBackButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/patient-home-page.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }
