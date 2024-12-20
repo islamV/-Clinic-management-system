@@ -77,7 +77,8 @@ public class ViewAppointmentsToMakeReportController {
             while (rs.next()) {
                 appointments.add(new Appointment(
                         rs.getInt("appointment_id"),
-                        rs.getString("patient_name")
+                        rs.getString("patient_name"),
+
                 ));
             }
         } catch (SQLException e) {

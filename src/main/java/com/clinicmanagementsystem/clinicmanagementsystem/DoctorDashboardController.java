@@ -1,7 +1,9 @@
 package com.clinicmanagementsystem.clinicmanagementsystem;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -24,6 +26,8 @@ public class DoctorDashboardController {
 
     @FXML
     private Button view_schedule_btn;
+    @FXML
+    private Button appointments_btn;
 
     public void makeReports() throws IOException {
         FXMLLoader Loader = new FXMLLoader(getClass().getResource("FXML/ViewAppointmentsToMakeReport.fxml"));
@@ -39,6 +43,13 @@ public class DoctorDashboardController {
 
     public void viewSchedule(){
 
+    }
+    public void Appointments(ActionEvent event) throws IOException {
+        FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/AppointmentsHistoryDoctorDashboard.fxml"));
+        Parent patientRoot = patientLoader.load();
+        Stage patientStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the stage from the event source
+        patientStage.setScene(new Scene(patientRoot));
+        patientStage.show();
     }
 
     public void logout() {

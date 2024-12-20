@@ -1,16 +1,25 @@
 package com.clinicmanagementsystem.clinicmanagementsystem;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class CRUDDoctorsAdminController {
@@ -45,6 +54,8 @@ public class CRUDDoctorsAdminController {
     public Button btnEditDoctor;
     @FXML
     public Button btnDeleteDoctor;
+    public Button btnManageSpecialty;
+    public Button btnManageSchedules;
 
     private ObservableList<Doctor> doctorList;
 
@@ -59,23 +70,16 @@ public class CRUDDoctorsAdminController {
         loadDoctorsFromDatabase();
     }
 
+
     private void loadDoctorsFromDatabase() {
-        String sql = "SELECT \n" +
-                "    u.user_id,\n" +
-                "    u.name,\n" +
-                "    u.age,\n" +
-                "    u.gender,\n" +
-                "    u.phone_number,\n" +
-                "    u.email_address,\n" +
-
-                "    d.specialty\n" +
-
-                "FROM \n" +
-                "    doctors d\n" +
-                "JOIN \n" +
-                "    users u ON d.user_id = u.user_id;";
-
-
+        String sql = """
+        SELECT 
+            u.user_id, u.name, u.age, u.gender, u.phone_number, u.email_address, 
+            s.name AS specialty
+        FROM doctors d
+        JOIN users u ON d.user_id = u.user_id
+        JOIN specialties s ON d.specialty_id = s.specialty_id;
+    """;
 
         DatabaseConnection databaseConnection = new DatabaseConnection();
         try (Connection connection = databaseConnection.getConnection();
@@ -87,11 +91,12 @@ public class CRUDDoctorsAdminController {
                 int id = resultSet.getInt("user_id");
                 String name = resultSet.getString("name");
                 int age = resultSet.getInt("age");
-                String speciality = resultSet.getString("specialty");
+                String specialty = resultSet.getString("specialty");
                 String gender = resultSet.getString("gender");
                 String phoneNumber = resultSet.getString("phone_number");
                 String email = resultSet.getString("email_address");
-                doctorList.add(new Doctor(id, name, age, speciality , gender , phoneNumber , email));
+
+                doctorList.add(new Doctor(id, name, age, specialty, gender, phoneNumber, email));
             }
             tableDoctors.setItems(doctorList);
 
@@ -115,7 +120,6 @@ public class CRUDDoctorsAdminController {
         JTextField emailField = new JTextField();
         JTextField phoneField = new JTextField();
         JTextField ageField = new JTextField();
-        JTextField specialtyField = new JTextField();
 
         JCheckBox maleCheckBox = new JCheckBox("Male");
         JCheckBox femaleCheckBox = new JCheckBox("Female");
@@ -124,13 +128,16 @@ public class CRUDDoctorsAdminController {
         genderGroup.add(maleCheckBox);
         genderGroup.add(femaleCheckBox);
 
+        JComboBox<String> specialtyDropdown = new JComboBox<>();
+        loadSpecialties(specialtyDropdown);
+
         Object[] fields = {
                 "Doctor Name:", nameField,
                 "Email Address:", emailField,
                 "Phone Number:", phoneField,
                 "Age:", ageField,
                 "Gender:", maleCheckBox, femaleCheckBox,
-                "Specialty:", specialtyField
+                "Specialty:", specialtyDropdown
         };
         int option = JOptionPane.showConfirmDialog(null, fields, "Add New Doctor", JOptionPane.OK_CANCEL_OPTION);
 
@@ -140,9 +147,9 @@ public class CRUDDoctorsAdminController {
             String phone = phoneField.getText();
             String ageInput = ageField.getText();
             String gender = maleCheckBox.isSelected() ? "Male" : (femaleCheckBox.isSelected() ? "Female" : "");
-            String specialty = specialtyField.getText();
+            String selectedSpecialty = (String) specialtyDropdown.getSelectedItem();
 
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || ageInput.isEmpty() || gender.isEmpty() || specialty.isEmpty()) {
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || ageInput.isEmpty() || gender.isEmpty() || selectedSpecialty == null) {
                 showErrorDialog("Input Error", "Please fill in all the fields.");
                 return;
             }
@@ -153,10 +160,10 @@ public class CRUDDoctorsAdminController {
                 DatabaseConnection conn = new DatabaseConnection();
                 try (Connection connection = conn.getConnection();
                      PreparedStatement userStatement = connection.prepareStatement(
-                             "INSERT INTO users (name, email_address, phone_number, gender, age, role, password) VALUES (?, ?, ?, ?, ?, 'Doctor', '12345678')",
+                             "INSERT INTO users (name, email_address, phone_number, gender, age, role, password) VALUES (?, ?, ?, ?, ?, 'Doctor', '123456')",
                              Statement.RETURN_GENERATED_KEYS);
                      PreparedStatement doctorStatement = connection.prepareStatement(
-                             "INSERT INTO doctors (user_id, specialty) VALUES (?, ?)")) {
+                             "INSERT INTO doctors (user_id, specialty_id, appointment_limit) VALUES (?, ?, ?)")) {
 
                     userStatement.setString(1, name);
                     userStatement.setString(2, email);
@@ -170,8 +177,10 @@ public class CRUDDoctorsAdminController {
                     if (generatedKeys.next()) {
                         int userId = generatedKeys.getInt(1);
 
+                        int specialtyId = getSpecialtyIdByName(selectedSpecialty);
+
                         doctorStatement.setInt(1, userId);
-                        doctorStatement.setString(2, specialty);
+                        doctorStatement.setInt(2, specialtyId);
 
                         doctorStatement.executeUpdate();
                         showSuccessDialog("Doctor Added", "The new doctor has been successfully added.");
@@ -180,7 +189,7 @@ public class CRUDDoctorsAdminController {
                     }
                 }
             } catch (NumberFormatException e) {
-                showErrorDialog("Input Error", "Age must be a valid number.");
+                showErrorDialog("Input Error", "Age and Appointment Limit must be valid numbers.");
             } catch (Exception e) {
                 e.printStackTrace();
                 showErrorDialog("Error", "An unexpected error occurred.");
@@ -190,6 +199,38 @@ public class CRUDDoctorsAdminController {
         }
         initialize();
     }
+
+    private void loadSpecialties(JComboBox<String> specialtyDropdown) {
+        String sql = "SELECT name FROM specialties";
+        DatabaseConnection conn = new DatabaseConnection();
+        try (Connection connection = conn.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                String specialtyName = resultSet.getString("name");
+                specialtyDropdown.addItem(specialtyName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorDialog("Error", "Failed to load specialties.");
+        }
+    }
+
+    private int getSpecialtyIdByName(String specialtyName) throws SQLException {
+        String sql = "SELECT specialty_id FROM specialties WHERE name = ?";
+        try (PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(sql)) {
+            statement.setString(1, specialtyName);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("specialty_id");
+                } else {
+                    throw new SQLException("Specialty not found: " + specialtyName);
+                }
+            }
+        }
+    }
+
 
 
     private void showSuccessDialog(String title, String message) {
@@ -201,7 +242,7 @@ public class CRUDDoctorsAdminController {
     }
 
     public void Delete(ActionEvent event) {
-        Doctor selectedDoctor = (Doctor) tableDoctors.getSelectionModel().getSelectedItem();
+        Doctor selectedDoctor = tableDoctors.getSelectionModel().getSelectedItem();
 
         if (selectedDoctor == null) {
             showErrorDialog("No Selection", "Please select a doctor from the table to delete.");
@@ -215,6 +256,7 @@ public class CRUDDoctorsAdminController {
         if (confirmDialog.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
             return;
         }
+
         DatabaseConnection conn = new DatabaseConnection();
         try (Connection connection = conn.getConnection();
              PreparedStatement deleteDoctorStmt = connection.prepareStatement("DELETE FROM doctors WHERE user_id = ?");
@@ -231,18 +273,19 @@ public class CRUDDoctorsAdminController {
 
                 if (userRowsAffected > 0) {
                     tableDoctors.getItems().remove(selectedDoctor);
-                    showSuccessDialog("Doctor Deleted", "The doctor has been successfully deleted.");
+                    showSuccessDialog("Doctor Deleted", "The doctor and all associated schedules have been successfully deleted.");
                 } else {
-                    showErrorDialog("Deletion Failed", "Unable to delete");
+                    showErrorDialog("Deletion Failed", "Unable to delete the user record.");
                 }
             } else {
-                showErrorDialog("Deletion Failed", "Unable to delete");
+                showErrorDialog("Deletion Failed", "Unable to delete the doctor record.");
             }
         } catch (Exception e) {
             e.printStackTrace();
             showErrorDialog("Database Error", "An error occurred while deleting the doctor.");
         }
     }
+
 
     public void Edit(ActionEvent event) {
         Doctor selectedDoctor = (Doctor) tableDoctors.getSelectionModel().getSelectedItem();
@@ -317,8 +360,8 @@ public class CRUDDoctorsAdminController {
                 stmt.setInt(6, userId);
                 stmt.executeUpdate();
             }
-
-            String updateDoctorSql = "UPDATE doctors SET specialty = ? WHERE user_id = ?";
+            int newid = getSpecialtyIdByName(specialty);
+            String updateDoctorSql = "UPDATE doctors SET specialty_id = ? WHERE user_id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateDoctorSql)) {
                 stmt.setString(1, specialty);
                 stmt.setInt(2, userId);
@@ -333,5 +376,50 @@ public class CRUDDoctorsAdminController {
             e.printStackTrace();
             showErrorDialog("Database Error", "An error occurred while updating the doctor.");
         }
+    }
+
+    public void showspecialtyCrud(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(AdminDashboardController.class.getResource("FXML/SpecialtyPage.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 690, 600);
+        SpecialtyPageController controller = fxmlLoader.getController();
+        controller.initialize();
+        stage.setTitle("Clinic Management System");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void showDoctorCrud(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(AdminDashboardController.class.getResource("FXML/CRUD-Doctors-Admin.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 690, 600);
+        CRUDDoctorsAdminController controller = fxmlLoader.getController();
+        controller.initialize();
+        stage.setTitle("Clinic Management System");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void showSchedulesCrud(ActionEvent event) {
+    }
+
+    public void showAppointmentCrud(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(AdminDashboardController.class.getResource("FXML/Appointment-Admin.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 690, 600);
+        AdminAppointmentController controller = fxmlLoader.getController();
+        stage.setTitle("Clinic Management System");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void logout(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(AdminDashboardController.class.getResource("FXML/LoginPage.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 690, 600);
+        LoginPageController controller = fxmlLoader.getController();
+        stage.setTitle("Clinic Management System");
+        stage.setScene(scene);
+        stage.show();
     }
 }
