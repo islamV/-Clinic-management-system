@@ -1,7 +1,6 @@
 package com.clinicmanagementsystem.clinicmanagementsystem;
 
 import javafx.beans.property.*;
-import java.time.LocalDateTime;
 
 public class Appointment {
     private final IntegerProperty appointmentId;
@@ -10,18 +9,16 @@ public class Appointment {
     private final StringProperty patientName;
     private final StringProperty doctorName;
     private final StringProperty scheduleDay;
-    private final ObjectProperty<LocalDateTime> appointmentDate;
     private final StringProperty specialty;
     private final StringProperty day;
 
     // Primary constructor
     public Appointment(String patientName, String doctorName, String specialty,
-                       LocalDateTime appointmentDate, int queueNumber, String status, String day) {
+                       int queueNumber, String status, String day) {
         this.appointmentId = new SimpleIntegerProperty(0);
         this.patientName = new SimpleStringProperty(patientName);
         this.doctorName = new SimpleStringProperty(doctorName);
         this.specialty = new SimpleStringProperty(specialty);
-        this.appointmentDate = new SimpleObjectProperty<>(appointmentDate);
         this.queueNumber = new SimpleIntegerProperty(queueNumber);
         this.status = new SimpleStringProperty(status);
         this.day = new SimpleStringProperty(day);
@@ -30,8 +27,14 @@ public class Appointment {
 
     // Secondary constructor for minimal appointment creation
     public Appointment(int appointmentId, String patientName, int queueNumber) {
-        this(patientName, "", "", null, queueNumber, "", "");
-        this.appointmentId.set(appointmentId);
+        this.appointmentId = new SimpleIntegerProperty(appointmentId);
+        this.patientName = new SimpleStringProperty(patientName);
+        this.doctorName = new SimpleStringProperty("");
+        this.specialty = new SimpleStringProperty("");
+        this.queueNumber = new SimpleIntegerProperty(queueNumber);
+        this.status = new SimpleStringProperty("");
+        this.day = new SimpleStringProperty("");
+        this.scheduleDay = new SimpleStringProperty("");
     }
 
     // Getters and setters for all properties
@@ -107,18 +110,6 @@ public class Appointment {
         scheduleDay.set(value);
     }
 
-    public ObjectProperty<LocalDateTime> appointmentDateProperty() {
-        return appointmentDate;
-    }
-
-    public LocalDateTime getAppointmentDate() {
-        return appointmentDate.get();
-    }
-
-    public void setAppointmentDate(LocalDateTime value) {
-        appointmentDate.set(value);
-    }
-
     public StringProperty specialtyProperty() {
         return specialty;
     }
@@ -145,7 +136,7 @@ public class Appointment {
 
     @Override
     public String toString() {
-        return String.format("Appointment{patientName=%s, doctorName=%s, date=%s, queueNumber=%d}",
-                getPatientName(), getDoctorName(), getAppointmentDate(), getQueueNumber());
+        return String.format("Appointment{patientName=%s, doctorName=%s, queueNumber=%d}",
+                getPatientName(), getDoctorName(), getQueueNumber());
     }
 }
