@@ -297,7 +297,7 @@ public class CRUDDoctorsAdminController {
 
         JTextField nameField = new JTextField(selectedDoctor.getName());
         JTextField emailField = new JTextField(selectedDoctor.getEmail());
-        JTextField phoneField = new JTextField(selectedDoctor.getPhoneNumber());
+        JTextField phoneField = new JTextField(selectedDoctor.getPhone());
         JTextField ageField = new JTextField(String.valueOf(selectedDoctor.getAge()));
         JTextField specialtyField = new JTextField(selectedDoctor.getSpeciality());
 

@@ -65,6 +65,8 @@ DROP TABLE IF EXISTS `schedules`;
 CREATE TABLE `schedules` (
     `schedule_id` int NOT NULL AUTO_INCREMENT,
     `doctor_id` int NOT NULL,
+    `appointment_limit` int NOT NULL ,
+    `remain_limit` int NOT NULL,
     `day` ENUM(
         'Monday',
         'Tuesday',
@@ -78,7 +80,7 @@ CREATE TABLE `schedules` (
     PRIMARY KEY (`schedule_id`),
     KEY `doctor_id` (`doctor_id`),
     CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `appointments`;
 
@@ -105,12 +107,12 @@ CREATE TABLE `appointments` (
     CONSTRAINT `appointments_ibfk_3` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-CREATE TABLE reports (
- report_id INT AUTO_INCREMENT PRIMARY KEY, -- Primary key for the reports table
- appointment_id INT ,            -- Foreign key related to appointments
- doctor_id INT ,                 -- Foreign key related to users (doctors)
-  report_content LONGTEXT NOT NULL,       -- Content of the report
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp for report creation
+CREATE TABLE `reports` (
+    report_id INT AUTO_INCREMENT PRIMARY KEY, -- Primary key for the reports table
+    appointment_id INT ,            -- Foreign key related to appointments
+    doctor_id INT ,                 -- Foreign key related to users (doctors)
+    report_content LONGTEXT NOT NULL,       -- Content of the report
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp for report creation
 
 
 CONSTRAINT fk_appointment FOREIGN KEY (appointment_id) REFERENCES appointments (appointment_id) ON DELETE CASCADE,
