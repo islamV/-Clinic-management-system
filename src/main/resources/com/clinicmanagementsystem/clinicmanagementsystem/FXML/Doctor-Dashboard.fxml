@@ -23,6 +23,7 @@
         <VBox layoutX="14.0" layoutY="50.0" spacing="20.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
             <Button fx:id="make_reports_btn" onAction="#makeReports" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Make Reports" />
             <Button fx:id="view_reports_btn" onAction="#viewReports" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="View Reports" />
+            <Button fx:id="appointments_btn" onAction="#Appointments" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Appointments" />
          <Button fx:id="view_schedule_btn" layoutX="10.0" layoutY="80.0" onAction="#viewSchedule" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="View Schedule" />
             <Button fx:id="logout_btn" onAction="#logout" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-size: 16px;" text="Logout" />
         </VBox>
