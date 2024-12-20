@@ -4,13 +4,13 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.ReportsController">
-    <TableView fx:id="tableView" layoutX="20.0" layoutY="20.0" prefHeight="400.0" prefWidth="760.0">
+    <TableView fx:id="reportsTable" layoutX="20.0" layoutY="20.0" prefHeight="400.0" prefWidth="760.0">
         <columns>
-            <TableColumn fx:id="reportIdColumn" text="Report ID" />
-            <TableColumn fx:id="appointmentIdColumn" text="Appointment ID" />
-            <TableColumn fx:id="doctorNameColumn" text="Doctor Name" />
-            <TableColumn fx:id="reportContentColumn" text="Report Content" />
-            <TableColumn fx:id="createdAtColumn" text="Created At" />
+            <TableColumn fx:id="reportIdColumn" text="Report ID"  prefWidth="50.0"/>
+            <TableColumn fx:id="appointmentIdColumn" text="Appointment ID" prefWidth="100.0" />
+            <TableColumn fx:id="doctorNameColumn" text="Doctor Name"  prefWidth="150.0"/>
+            <TableColumn fx:id="reportContentColumn" text="Report Content"   prefWidth="300.0"/>
+            <TableColumn fx:id="createdAtColumn" text="Created At" prefWidth="150.0" />
 
 
         </columns>
