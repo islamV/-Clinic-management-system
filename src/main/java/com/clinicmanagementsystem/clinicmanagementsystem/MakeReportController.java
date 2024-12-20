@@ -27,48 +27,65 @@ public class MakeReportController {
     @FXML
     private Button submitButton;
 
-    private int appointmentID;
+    private  int appointmentID;
 
-    MakeReportController(int appointmentIDD){
-        appointmentID = appointmentIDD;
+
+    void setAppointmentId(int appointmentID) {
+        this.appointmentID = appointmentID;
+
     }
 
     @FXML
-    private void submitbutton (){
-        if(reportArea.getText()==null){
-            showAlert("Please enter report.");
-        }else{
-            String reportContent = reportArea.getText();
-            int doctorID = userData.id;
-            String insertQuery = "insert into reports (appointment_id,doctor_id,report_content) valuse (?,?,?)";
-            try(Connection con=DatabaseConnection.getConnection();
-                PreparedStatement stat =con.prepareStatement(insertQuery)){
+    private void submitbutton() {
+        String reportContent = reportArea.getText();
 
-                stat.setInt(1,appointmentID);
-                stat.setInt(2,doctorID);
-                stat.setString(3,reportContent);
-                int rs = stat.executeUpdate();
-                if(rs>0){
-                    showAlert("Report submitted successfully.");
-                }else{
-                    showAlert("Can't submit the report.");
+        if (reportContent == null || reportContent.trim().isEmpty()) {
+            showAlert("Please enter a report.");
+            return;
+        }
+
+        int doctorID = userData.id;
+        String insertQuery = "Update reports set report_content = ? where appointment_id =?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement stat = con.prepareStatement(insertQuery)) {
+
+            stat.setInt(2, appointmentID);
+            stat.setString(1, reportContent);
+
+            int rs = stat.executeUpdate();
+            if (rs > 0) {
+                showAlert("Report submitted successfully.");
+                reportArea.clear();
+                try{
+                    PreparedStatement stut = con.prepareStatement("UPDATE appointments SET status = ? WHERE appointment_id = ?");
+                    stut.setString(1, "Completed");
+                    stut.setInt(2, appointmentID);
+                    stut.executeUpdate();
+                }catch (Exception ex){
+                    ex.printStackTrace();
                 }
-            }catch (Exception e){
-                e.printStackTrace();
+            } else {
+                showAlert("Unable to submit the report.");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("An error occurred: " + e.getMessage());
         }
     }
 
     @FXML
-    private void backbutton (){
+    private void backbutton() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PreviousFrame.fxml"));// غير الاسم هنا باسم الفريم بتاعتك يا ماهر
-            Parent previousSceneRoot = loader.load();
-            Stage currentStage = (Stage) backButton.getScene().getWindow();
-            Scene previousScene = new Scene(previousSceneRoot);
-            currentStage.setScene(previousScene);
-            currentStage.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/ViewAppointmentsToMakeReport.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (Exception e) {
+            showAlert(e.getMessage());
+
             e.printStackTrace();
         }
     }
@@ -79,4 +96,3 @@ public class MakeReportController {
         alert.show();
     }
 }
-

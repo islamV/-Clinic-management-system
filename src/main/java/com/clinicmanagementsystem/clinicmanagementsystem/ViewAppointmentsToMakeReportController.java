@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.scene.control.cell.CheckBoxTableCell;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,9 +19,6 @@ public class ViewAppointmentsToMakeReportController {
 
     @FXML
     private TableView<Appointment> appointmentsTable;
-
-    @FXML
-    private TableColumn<Appointment, Boolean> selectColumn;
 
     @FXML
     private TableColumn<Appointment, Integer> appointmentIdColumn;
@@ -36,12 +32,13 @@ public class ViewAppointmentsToMakeReportController {
     @FXML
     private Button clearButton;
 
+    @FXML
+    private Button backButton; // Add this field for the Back button
+
     private final ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        selectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectColumn));
-
         appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         patientNameColumn.setCellValueFactory(new PropertyValueFactory<>("patientName"));
 
@@ -71,7 +68,6 @@ public class ViewAppointmentsToMakeReportController {
                     reports r ON a.appointment_id = r.appointment_id
                 WHERE 
                     (r.report_content IS NULL OR r.report_content = '')
-                    AND a.status = 'Completed';
                 """;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -82,7 +78,6 @@ public class ViewAppointmentsToMakeReportController {
                 appointments.add(new Appointment(
                         rs.getInt("appointment_id"),
                         rs.getString("patient_name"),
-                        0
                 ));
             }
         } catch (SQLException e) {
@@ -94,38 +89,63 @@ public class ViewAppointmentsToMakeReportController {
     @FXML
     private void handleGenerateReport() {
         Appointment selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
-
         if (selectedAppointment == null) {
             showAlert(Alert.AlertType.WARNING, "No Appointment Selected",
                     "Please select an appointment to generate a report.");
             return;
         }
-
         try {
-            int appointmentID = selectedAppointment.getAppointmentId();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("MakeReport.fxml"));
-            MakeReportController controller = new MakeReportController(appointmentID);
-            loader.setController(controller);
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/MakeReportPage.fxml"));
             Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Make Report");
+            MakeReportController controller = loader.getController();
+            controller.setAppointmentId(selectedAppointment.getAppointmentId());
+
+            Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
-
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error",
-                    "Error opening report window: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to go back to the previous page: " + e.getMessage());
             e.printStackTrace();
         }
+//
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/MakeReportPage.fxml"));
+//            Parent root = loader.load();
+//
+//            MakeReportController controller = loader.getController();
+//            controller.setAppointmentId(selectedAppointment.getAppointmentId());
+//
+//            Stage stage = new Stage();
+//            stage.setTitle("Make Report");
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (Exception e) {
+//            showAlert(Alert.AlertType.ERROR, "Error",
+//                    "Error opening report window: " + e.getMessage());
+//            e.printStackTrace();
+//        }
     }
 
     @FXML
     private void handleClear() {
         appointmentsTable.getSelectionModel().clearSelection();
         loadAppointmentsWithoutReports();
+    }
+
+    @FXML
+    private void handleBack() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/Doctor-Dashboard.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to go back to the previous page: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
