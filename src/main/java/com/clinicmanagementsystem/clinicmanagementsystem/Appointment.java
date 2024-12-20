@@ -3,13 +3,13 @@ package com.clinicmanagementsystem.clinicmanagementsystem;
 import javafx.beans.property.*;
 
 public class Appointment {
-    private final IntegerProperty appointmentId;
-    private final IntegerProperty queueNumber;
-    private final StringProperty status;
-    private final StringProperty patientName;
-    private final StringProperty doctorName;
-    private final StringProperty scheduleDay ;
-    private final StringProperty createdAt ;
+    private  IntegerProperty appointmentId;
+    private  IntegerProperty queueNumber;
+    private  StringProperty status;
+    private  StringProperty patientName;
+    private  StringProperty doctorName;
+    private  StringProperty scheduleDay ;
+    private  StringProperty createdAt ;
 
     public Appointment(int appointmentId, int queueNumber, String status, String patientName, String doctorName , String scheduleDay , String createdAt) {
         this.appointmentId = new SimpleIntegerProperty(appointmentId);
@@ -29,6 +29,10 @@ public class Appointment {
         this.doctorName = new SimpleStringProperty("Unknown"); // Default value
         this.scheduleDay = new SimpleStringProperty("Unknown"); // Default value
         this.createdAt = new SimpleStringProperty("Unknown"); // Default value
+    }
+
+    public Appointment(int appointmentId, String patientName, Object o) {
+
     }
 
 
