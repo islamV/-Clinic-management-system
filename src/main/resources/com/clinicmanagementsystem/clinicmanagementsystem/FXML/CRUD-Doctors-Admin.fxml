@@ -25,9 +25,11 @@
 
     <AnchorPane prefHeight="480.0" prefWidth="668.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="120.0">
         <VBox layoutX="14.0" layoutY="50.0" spacing="20.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
-            <Button fx:id="btnManageAppointments" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Manage Appointments" />
-            <Button fx:id="btnManageDoctors" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Manage Doctors" />
-            <Button fx:id="btnLogout" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-size: 16px;" text="Logout" />
+            <Button fx:id="btnManageSpecialty" onAction="#showspecialtyCrud" prefHeight="50.0" prefWidth="121.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Specialty" />
+            <Button fx:id="btnManageDoctors" onAction="#showDoctorCrud" prefHeight="50.0" prefWidth="121.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Doctors" />
+            <Button fx:id="btnManageSchedules" onAction="#showSchedulesCrud" prefHeight="50.0" prefWidth="121.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Schedules" />
+            <Button fx:id="btnManageAppointments" onAction="#showAppointmentCrud" prefHeight="50.0" prefWidth="121.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 16px;" text="Appointments" />
+            <Button fx:id="btnLogout" onAction="#logout" prefHeight="50.0" prefWidth="121.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-size: 16px;" text="Logout" />
         </VBox>
 
         <VBox fx:id="crudContainer" layoutX="240.0" layoutY="20.0" spacing="10.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">

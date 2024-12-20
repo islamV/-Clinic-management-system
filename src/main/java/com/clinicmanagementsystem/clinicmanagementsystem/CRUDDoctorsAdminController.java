@@ -177,7 +177,7 @@ public class CRUDDoctorsAdminController {
                     if (generatedKeys.next()) {
                         int userId = generatedKeys.getInt(1);
 
-                        int specialtyId = getSpecialtyIdByName(selectedSpecialty, connection);
+                        int specialtyId = getSpecialtyIdByName(selectedSpecialty);
 
                         doctorStatement.setInt(1, userId);
                         doctorStatement.setInt(2, specialtyId);
@@ -217,9 +217,9 @@ public class CRUDDoctorsAdminController {
         }
     }
 
-    private int getSpecialtyIdByName(String specialtyName, Connection connection) throws SQLException {
+    private int getSpecialtyIdByName(String specialtyName) throws SQLException {
         String sql = "SELECT specialty_id FROM specialties WHERE name = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(sql)) {
             statement.setString(1, specialtyName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -360,8 +360,8 @@ public class CRUDDoctorsAdminController {
                 stmt.setInt(6, userId);
                 stmt.executeUpdate();
             }
-
-            String updateDoctorSql = "UPDATE doctors SET specialty = ? WHERE user_id = ?";
+            int newid = getSpecialtyIdByName(specialty);
+            String updateDoctorSql = "UPDATE doctors SET specialty_id = ? WHERE user_id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateDoctorSql)) {
                 stmt.setString(1, specialty);
                 stmt.setInt(2, userId);
@@ -378,7 +378,15 @@ public class CRUDDoctorsAdminController {
         }
     }
 
-    public void showspecialtyCrud(ActionEvent event) {
+    public void showspecialtyCrud(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(AdminDashboardController.class.getResource("FXML/SpecialtyPage.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 690, 600);
+        SpecialtyPageController controller = fxmlLoader.getController();
+        controller.initialize();
+        stage.setTitle("Clinic Management System");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void showDoctorCrud(ActionEvent event) throws IOException {
@@ -395,7 +403,14 @@ public class CRUDDoctorsAdminController {
     public void showSchedulesCrud(ActionEvent event) {
     }
 
-    public void showAppointmentCrud(ActionEvent event) {
+    public void showAppointmentCrud(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(AdminDashboardController.class.getResource("FXML/Appointment-Admin.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 690, 600);
+        AdminAppointmentController controller = fxmlLoader.getController();
+        stage.setTitle("Clinic Management System");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void logout(ActionEvent event) throws IOException {

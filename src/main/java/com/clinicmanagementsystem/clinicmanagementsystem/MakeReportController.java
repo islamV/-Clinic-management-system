@@ -12,9 +12,8 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
-public class hMakeReportController {
+public class MakeReportController {
 
     @FXML
     private Button backButton;

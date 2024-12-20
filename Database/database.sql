@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS `specialties`;
 
 CREATE TABLE `specialties` (
     `specialty_id` int NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
+    `name` varchar(255) NOT NULL unique,
     PRIMARY KEY (`specialty_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
@@ -76,7 +76,6 @@ CREATE TABLE `schedules` (
         'Saturday',
         'Sunday'
     ) NOT NULL,
-    `appointment_limit` int NOT NULL ,
     PRIMARY KEY (`schedule_id`),
     KEY `doctor_id` (`doctor_id`),
     CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE
