@@ -54,7 +54,7 @@ public class AppointmentsHistoryDoctorDashboard {
     }
 
     private void loadAppointmentsFromDatabase() {
-
+        DatabaseConnection databaseConnection = new DatabaseConnection();
         String query = """
                 SELECT\s
                    a.appointment_id,\s
