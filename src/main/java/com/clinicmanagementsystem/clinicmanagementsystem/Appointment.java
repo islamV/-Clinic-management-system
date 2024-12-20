@@ -2,6 +2,8 @@ package com.clinicmanagementsystem.clinicmanagementsystem;
 
 import javafx.beans.property.*;
 
+import java.time.LocalDateTime;
+
 public class Appointment {
     private  IntegerProperty appointmentId;
     private  IntegerProperty queueNumber;
@@ -33,6 +35,9 @@ public class Appointment {
 
     public Appointment(int appointmentId, String patientName, Object o) {
 
+    }
+
+    public Appointment(String patientName, String doctorName, String specialty, LocalDateTime appointmentDate, int queueNumber, String status, String appointmentDay) {
     }
 
 
