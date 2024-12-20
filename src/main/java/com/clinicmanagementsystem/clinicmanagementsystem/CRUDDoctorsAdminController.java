@@ -177,7 +177,7 @@ public class CRUDDoctorsAdminController {
                     if (generatedKeys.next()) {
                         int userId = generatedKeys.getInt(1);
 
-                        int specialtyId = getSpecialtyIdByName(selectedSpecialty, connection);
+                        int specialtyId = getSpecialtyIdByName(selectedSpecialty);
 
                         doctorStatement.setInt(1, userId);
                         doctorStatement.setInt(2, specialtyId);
@@ -217,9 +217,9 @@ public class CRUDDoctorsAdminController {
         }
     }
 
-    private int getSpecialtyIdByName(String specialtyName, Connection connection) throws SQLException {
+    private int getSpecialtyIdByName(String specialtyName) throws SQLException {
         String sql = "SELECT specialty_id FROM specialties WHERE name = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = DatabaseConnection.getConnection().prepareStatement(sql)) {
             statement.setString(1, specialtyName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -360,10 +360,10 @@ public class CRUDDoctorsAdminController {
                 stmt.setInt(6, userId);
                 stmt.executeUpdate();
             }
-
-            String updateDoctorSql = "UPDATE doctors SET specialty = ? WHERE user_id = ?";
+            int newid = getSpecialtyIdByName(specialty);
+            String updateDoctorSql = "UPDATE doctors SET sspecialty_id = ? WHERE user_id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateDoctorSql)) {
-                stmt.setString(1, specialty);
+                stmt.setInt(1, newid);
                 stmt.setInt(2, userId);
                 stmt.executeUpdate();
             }
