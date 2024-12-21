@@ -33,7 +33,7 @@ public class ViewAppointmentsToMakeReportController {
     private Button clearButton;
 
     @FXML
-    private Button backButton; // Add this field for the Back button
+    private Button backButton;
 
     private final ObservableList<Appointment> appointments = FXCollections.observableArrayList();
 
@@ -56,41 +56,25 @@ public class ViewAppointmentsToMakeReportController {
     private void loadAppointmentsWithoutReports() {
         appointments.clear();
 
-//        String sql = """
-//                SELECT
-//                    a.appointment_id,
-//                    u.name AS patient_name
-//                FROM
-//                    appointments a
-//                 JOIN
-//                    users u ON a.patient_id = u.user_id
-//                 JOIN
-//                    reports r ON a.appointment_id = r.appointment_id
-//                WHERE
-//                a.status = "Pending"
-//                """;
-
         String sql = """
-    SELECT
-        a.appointment_id,
-        p.name AS patient_name
-    FROM
-        appointments a
-    JOIN
-        users p ON a.patient_id = p.user_id
-    JOIN
-        doctors d ON a.doctor_id = d.doctor_id
-    JOIN
-        users u ON d.user_id = u.user_id
-    WHERE
-        d.user_id = ? AND a.status = "Pending" ;
-    """;
+        SELECT
+            a.appointment_id,
+            p.name AS patient_name
+        FROM
+            appointments a
+        JOIN
+            users p ON a.patient_id = p.user_id
+        JOIN
+            doctors d ON a.doctor_id = d.doctor_id
+        WHERE
+            d.user_id = ? AND a.status = "Pending";
+        """;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            // Set the parameter for the WHERE clause
-            pstmt.setInt(1, userData.id); // Replace `doctorUserId` with the actual variable
+            // Replace `userData.id` with the actual doctor_id
+            pstmt.setInt(1, userData.id);
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -103,7 +87,6 @@ public class ViewAppointmentsToMakeReportController {
             showAlert(Alert.AlertType.ERROR, "Database Error",
                     "Error loading appointments: " + e.getMessage());
         }
-
     }
 
     @FXML
@@ -119,34 +102,19 @@ public class ViewAppointmentsToMakeReportController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/MakeReportPage.fxml"));
             Parent root = loader.load();
 
+            // Pass data to the next controller
             MakeReportController controller = loader.getController();
             controller.setAppointmentId(selectedAppointment.getAppointmentId());
-//            controller.setDoctorId(selectedDoctor.getDoctorId());
+            controller.setDoctorId(userData.id);
 
+            // Navigate to the next page
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Unable to go back to the previous page: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to open Make Report page: " + e.getMessage());
             e.printStackTrace();
         }
-//
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/MakeReportPage.fxml"));
-//            Parent root = loader.load();
-//
-//            MakeReportController controller = loader.getController();
-//            controller.setAppointmentId(selectedAppointment.getAppointmentId());
-//
-//            Stage stage = new Stage();
-//            stage.setTitle("Make Report");
-//            stage.setScene(new Scene(root));
-//            stage.show();
-//        } catch (Exception e) {
-//            showAlert(Alert.AlertType.ERROR, "Error",
-//                    "Error opening report window: " + e.getMessage());
-//            e.printStackTrace();
-//        }
     }
 
     @FXML

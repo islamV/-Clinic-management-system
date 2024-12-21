@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class MakeReportController {
 
@@ -27,12 +29,15 @@ public class MakeReportController {
     @FXML
     private Button submitButton;
 
-    private  int appointmentID;
-
+    private int appointmentID;
+    private int doctorId;
 
     void setAppointmentId(int appointmentID) {
         this.appointmentID = appointmentID;
+    }
 
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
     }
 
     @FXML
@@ -44,27 +49,34 @@ public class MakeReportController {
             return;
         }
 
-        int doctorID = userData.id;
-        String insertQuery = "Update reports set report_content = ? where appointment_id =?";
+        String insertQuery = """
+            INSERT INTO reports ( doctor_id, appointment_id, report_content, created_at)
+            VALUES ( ?, ?, ?, ?)
+        """;
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement stat = con.prepareStatement(insertQuery)) {
 
+            // Set values for the query
+            stat.setInt(1, doctorId);
             stat.setInt(2, appointmentID);
-            stat.setString(1, reportContent);
+            stat.setString(3, reportContent);
+            stat.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
 
-            int rs = stat.executeUpdate();
-            if (rs > 0) {
+            int rowsAffected = stat.executeUpdate();
+            if (rowsAffected > 0) {
                 showAlert("Report submitted successfully.");
                 reportArea.clear();
-                try{
-                    PreparedStatement stut = con.prepareStatement("UPDATE appointments SET status = ? WHERE appointment_id = ?");
-                    stut.setString(1, "Completed");
-                    stut.setInt(2, appointmentID);
-                    stut.executeUpdate();
-                }catch (Exception ex){
-                    ex.printStackTrace();
+
+                // Update the appointment status to 'Completed'
+                try (PreparedStatement updateAppointment = con.prepareStatement(
+                        "UPDATE appointments SET status = ? WHERE appointment_id = ?"
+                )) {
+                    updateAppointment.setString(1, "Completed");
+                    updateAppointment.setInt(2, appointmentID);
+                    updateAppointment.executeUpdate();
                 }
+
             } else {
                 showAlert("Unable to submit the report.");
             }
@@ -85,7 +97,6 @@ public class MakeReportController {
             stage.show();
         } catch (Exception e) {
             showAlert(e.getMessage());
-
             e.printStackTrace();
         }
     }
