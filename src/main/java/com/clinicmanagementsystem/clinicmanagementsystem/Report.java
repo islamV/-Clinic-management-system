@@ -5,16 +5,16 @@ import java.sql.Timestamp;
 public class Report {
     private int reportId;
     private int appointmentId;
-    private int doctorId;
+
     private String doctorName;
     private String reportContent;
     private Timestamp createdAt;
 
     // Constructor
-    public Report(int reportId, int appointmentId, int doctorId, String doctorName, String reportContent, Timestamp createdAt) {
+    public Report(int reportId, int appointmentId, String doctorName, String reportContent, Timestamp createdAt) {
         this.reportId = reportId;
         this.appointmentId = appointmentId;
-        this.doctorId = doctorId;
+
         this.doctorName = doctorName;
         this.reportContent = reportContent;
         this.createdAt = createdAt;
@@ -37,13 +37,6 @@ public class Report {
         this.appointmentId = appointmentId;
     }
 
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
-    }
 
     public String getDoctorName() {
         return doctorName;

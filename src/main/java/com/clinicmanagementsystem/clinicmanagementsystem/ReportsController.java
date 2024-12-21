@@ -8,13 +8,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 public class ReportsController {
 
@@ -49,36 +53,51 @@ public class ReportsController {
 
         // Load data into the table
         loadReportsData();
+
+        // Add a listener for row clicks
+        reportsTable.setOnMouseClicked(event -> handleRowClick());
     }
 
     private void loadReportsData() {
         DatabaseConnection databaseConnection = new DatabaseConnection();
 
-
         String query = """
-                SELECT r.report_id, r.appointment_id, r.doctor_id, u.name AS doctor_name, 
-                       r.report_content, r.created_at
-                FROM reports r
-                INNER JOIN users u ON r.doctor_id = u.user_id
-                """;
+            SELECT
+                r.report_id,
+                r.appointment_id,
+                u.name AS doctor_name,
+                r.created_at,
+                r.report_content
+            FROM
+                reports r
+            JOIN
+                appointments a ON r.appointment_id = a.appointment_id
+            JOIN
+                doctors d ON a.doctor_id = d.doctor_id
+            JOIN
+                users u ON d.user_id = u.user_id
+            WHERE
+                d.user_id = ?;
+        """;
 
         try (Connection connection = databaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            while (resultSet.next()) {
-                int reportId = resultSet.getInt("report_id");
-                int appointmentId = resultSet.getInt("appointment_id");
-                int doctorId = resultSet.getInt("doctor_id");
-                String doctorName = resultSet.getString("doctor_name");
-                String reportContent = resultSet.getString("report_content");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
+            preparedStatement.setInt(1, userData.id); // Assuming `userData.id` provides the doctor ID
 
-                reportsList.add(new Report(reportId, appointmentId, doctorId, doctorName, reportContent, createdAt));
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int reportId = resultSet.getInt("report_id");
+                    int appointmentId = resultSet.getInt("appointment_id");
+                    String doctorName = resultSet.getString("doctor_name");
+                    String reportContent = resultSet.getString("report_content");
+                    Timestamp createdAt = resultSet.getTimestamp("created_at");
+
+                    reportsList.add(new Report(reportId, appointmentId, doctorName, reportContent, createdAt));
+                }
+
+                reportsTable.setItems(reportsList);
             }
-
-            reportsTable.setItems(reportsList);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,5 +110,16 @@ public class ReportsController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    private void handleRowClick() {
+        Report selectedReport = reportsTable.getSelectionModel().getSelectedItem();
+        if (selectedReport != null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Report Content");
+            alert.setHeaderText("Details for Report ID: " + selectedReport.getReportId());
+            alert.setContentText(selectedReport.getReportContent());
+            alert.showAndWait();
+        }
     }
 }

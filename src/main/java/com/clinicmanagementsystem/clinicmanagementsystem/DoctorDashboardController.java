@@ -37,12 +37,20 @@ public class DoctorDashboardController {
         patientStage.show();
     }
 
-    public void viewReports(){
-
+    public void viewReports(ActionEvent event) throws IOException {
+        FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/doctorReports.fxml"));
+        Parent patientRoot = patientLoader.load();
+        Stage patientStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the stage from the event source
+        patientStage.setScene(new Scene(patientRoot));
+        patientStage.show();
     }
 
-    public void viewSchedule(){
-
+    public void viewSchedule(ActionEvent event) throws IOException {
+        FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/doctorSchedules.fxml"));
+        Parent patientRoot = patientLoader.load();
+        Stage patientStage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Get the stage from the event source
+        patientStage.setScene(new Scene(patientRoot));
+        patientStage.show();
     }
     public void Appointments(ActionEvent event) throws IOException {
         FXMLLoader patientLoader = new FXMLLoader(getClass().getResource("FXML/AppointmentsHistoryDoctorDashboard.fxml"));

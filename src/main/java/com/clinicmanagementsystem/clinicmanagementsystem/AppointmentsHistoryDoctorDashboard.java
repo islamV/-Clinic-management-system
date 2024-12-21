@@ -36,7 +36,7 @@ public class AppointmentsHistoryDoctorDashboard {
     @FXML
     private TableColumn<Appointment, String> createdAtColumn;
 
-    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private final ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -80,11 +80,13 @@ public class AppointmentsHistoryDoctorDashboard {
                     d.user_id = ?;
                 """;
 
+
+
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // Set the parameter for the patient ID
-          preparedStatement.setInt(1, userData.id); // Assuming `userData.getId()` returns the patient ID
+          preparedStatement.setInt(1, userData.id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -97,7 +99,7 @@ public class AppointmentsHistoryDoctorDashboard {
                     String createdAt = resultSet.getString("created_at");
 
                     // Add to the appointment list
-                    appointmentList.add(new Appointment(appointmentId, queueNumber, status, patientName, doctorName, scheduleDay, createdAt));
+                    appointmentList.add(new Appointment(appointmentId, patientName, doctorName, queueNumber, status, scheduleDay, createdAt));
                 }
 
                 // Update the table view
