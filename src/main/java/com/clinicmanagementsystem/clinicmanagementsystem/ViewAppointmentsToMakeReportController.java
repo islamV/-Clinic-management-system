@@ -56,22 +56,41 @@ public class ViewAppointmentsToMakeReportController {
     private void loadAppointmentsWithoutReports() {
         appointments.clear();
 
+//        String sql = """
+//                SELECT
+//                    a.appointment_id,
+//                    u.name AS patient_name
+//                FROM
+//                    appointments a
+//                 JOIN
+//                    users u ON a.patient_id = u.user_id
+//                 JOIN
+//                    reports r ON a.appointment_id = r.appointment_id
+//                WHERE
+//                a.status = "Pending"
+//                """;
+
         String sql = """
-                SELECT 
-                    a.appointment_id, 
-                    u.name AS patient_name
-                FROM 
-                    appointments a
-                INNER JOIN 
-                    users u ON a.patient_id = u.user_id
-                LEFT JOIN 
-                    reports r ON a.appointment_id = r.appointment_id
-                WHERE 
-                    (r.report_content IS NULL OR r.report_content = '')
-                """;
+    SELECT
+        a.appointment_id,
+        p.name AS patient_name
+    FROM
+        appointments a
+    JOIN
+        users p ON a.patient_id = p.user_id
+    JOIN
+        doctors d ON a.doctor_id = d.doctor_id
+    JOIN
+        users u ON d.user_id = u.user_id
+    WHERE
+        d.user_id = ? AND a.status = "Pending" ;
+    """;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set the parameter for the WHERE clause
+            pstmt.setInt(1, userData.id); // Replace `doctorUserId` with the actual variable
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -84,11 +103,13 @@ public class ViewAppointmentsToMakeReportController {
             showAlert(Alert.AlertType.ERROR, "Database Error",
                     "Error loading appointments: " + e.getMessage());
         }
+
     }
 
     @FXML
     private void handleGenerateReport() {
         Appointment selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
+
         if (selectedAppointment == null) {
             showAlert(Alert.AlertType.WARNING, "No Appointment Selected",
                     "Please select an appointment to generate a report.");
@@ -100,6 +121,7 @@ public class ViewAppointmentsToMakeReportController {
 
             MakeReportController controller = loader.getController();
             controller.setAppointmentId(selectedAppointment.getAppointmentId());
+//            controller.setDoctorId(selectedDoctor.getDoctorId());
 
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root));
