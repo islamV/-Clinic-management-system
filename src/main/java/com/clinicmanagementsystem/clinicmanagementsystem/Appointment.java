@@ -56,10 +56,23 @@ public class Appointment {
     public Appointment(String patientName, String doctorName, String specialty, LocalDateTime appointmentDate, int queueNumber, String status, String appointmentDay) {
     }
 
-    public Appointment(int appointmentId, int queueNumber, String status, String patientName, String doctorName, String scheduleDay, String createdAt) {
+    public Appointment(int appointmentId, String patientName, String doctorName,
+                       int queueNumber, String status, String day, String createdAt){
+        this.appointmentId = new SimpleIntegerProperty(appointmentId);
+        this.queueNumber = new SimpleIntegerProperty(queueNumber);
+        this.status = new SimpleStringProperty(status);
+        this.patientName = new SimpleStringProperty(patientName);
+        this.doctorName = new SimpleStringProperty(doctorName);
+        this.scheduleDay = new SimpleStringProperty(day);
+        this.day = new SimpleStringProperty(day);
+        this.createdAt = new SimpleStringProperty(createdAt);
     }
 
+
     public Appointment(int appointmentId, String patientName) {
+    }
+
+    public Appointment(int appointmentId, int queueNumber, String status, String patientName, String doctorName, String scheduleDay, String createdAt) {
     }
 
     // Getters and Property Methods

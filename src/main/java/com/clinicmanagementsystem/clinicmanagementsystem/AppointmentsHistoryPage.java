@@ -98,7 +98,7 @@ public class AppointmentsHistoryPage {
                     String createdAt = resultSet.getString("created_at");
 
                     // Add to the appointment list
-                    appointmentList.add(new Appointment(appointmentId, queueNumber, status, patientName, doctorName, scheduleDay, createdAt));
+                    appointmentList.add(new Appointment(appointmentId, patientName, doctorName, queueNumber, status, scheduleDay, createdAt));
                 }
 
 
