@@ -70,7 +70,6 @@ public class AppointmentsHistoryDoctorDashboard {
                    users p ON a.patient_id = p.user_id
                JOIN\s
                    schedules schedule ON a.schedule_id = schedule.schedule_id
-        
                JOIN\s
         
                    doctors d ON a.doctor_id = d.doctor_id

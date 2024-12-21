@@ -70,10 +70,15 @@ public class Appointment {
 
 
     public Appointment(int appointmentId, String patientName) {
+        this.appointmentId = new SimpleIntegerProperty(appointmentId);
+        this.queueNumber = new SimpleIntegerProperty(0); // Default value
+        this.status = new SimpleStringProperty("0"); // Default value
+        this.patientName = new SimpleStringProperty(patientName);
+        this.doctorName = new SimpleStringProperty("Unknown"); // Default value
+        this.scheduleDay = new SimpleStringProperty("Unknown"); // Default value
+        this.createdAt = new SimpleStringProperty("Unknown"); // Default value
     }
 
-    public Appointment(int appointmentId, int queueNumber, String status, String patientName, String doctorName, String scheduleDay, String createdAt) {
-    }
 
     // Getters and Property Methods
     public int getAppointmentId() {
