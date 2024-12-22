@@ -5,17 +5,17 @@ import java.sql.Timestamp;
 public class Report {
     private int reportId;
     private int appointmentId;
-
     private String doctorName;
+    private String patientName; // Added field
     private String reportContent;
     private Timestamp createdAt;
 
     // Constructor
-    public Report(int reportId, int appointmentId, String doctorName, String reportContent, Timestamp createdAt) {
+    public Report(int reportId, int appointmentId, String doctorName, String patientName, String reportContent, Timestamp createdAt) {
         this.reportId = reportId;
         this.appointmentId = appointmentId;
-
         this.doctorName = doctorName;
+        this.patientName = patientName; // Initialize new field
         this.reportContent = reportContent;
         this.createdAt = createdAt;
     }
@@ -37,7 +37,6 @@ public class Report {
         this.appointmentId = appointmentId;
     }
 
-
     public String getDoctorName() {
         return doctorName;
     }
@@ -46,13 +45,19 @@ public class Report {
         this.doctorName = doctorName;
     }
 
+    public String getPatientName() {
+        return patientName; // Getter for new field
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName; // Setter for new field
+    }
+
     public String getReportContent() {
         return reportContent;
     }
 
-    public void setReportContent(String reportContent) {
-        this.reportContent = reportContent;
-    }
+
 
     public Timestamp getCreatedAt() {
         return createdAt;

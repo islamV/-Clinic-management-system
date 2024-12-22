@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -62,23 +61,27 @@ public class ReportsController {
         DatabaseConnection databaseConnection = new DatabaseConnection();
 
         String query = """
-            SELECT
-                r.report_id,
-                r.appointment_id,
-                u.name AS doctor_name,
-                r.created_at,
-                r.report_content
-            FROM
-                reports r
-            JOIN
-                appointments a ON r.appointment_id = a.appointment_id
-            JOIN
-                doctors d ON a.doctor_id = d.doctor_id
-            JOIN
-                users u ON d.user_id = u.user_id
-            WHERE
-                d.user_id = ?;
-        """;
+        
+                SELECT
+            r.report_id,
+            r.appointment_id,
+            u.name AS doctor_name,
+            p.name AS patient_name, -- Assuming "p.name" is the patient's name in the database
+            r.created_at,
+            r.report_content
+        FROM
+            reports r
+        JOIN
+            appointments a ON r.appointment_id = a.appointment_id
+        JOIN
+            doctors d ON a.doctor_id = d.doctor_id
+        JOIN
+            users p ON a.patient_id = p.user_id
+        JOIN
+            users u ON d.user_id = u.user_id
+        WHERE
+            d.user_id = ?;
+                                """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -90,10 +93,12 @@ public class ReportsController {
                     int reportId = resultSet.getInt("report_id");
                     int appointmentId = resultSet.getInt("appointment_id");
                     String doctorName = resultSet.getString("doctor_name");
+                    String patientName = resultSet.getString("patient_name");
                     String reportContent = resultSet.getString("report_content");
+
                     Timestamp createdAt = resultSet.getTimestamp("created_at");
 
-                    reportsList.add(new Report(reportId, appointmentId, doctorName, reportContent, createdAt));
+                    reportsList.add(new Report(reportId, appointmentId, doctorName, patientName, reportContent, createdAt));
                 }
 
                 reportsTable.setItems(reportsList);
@@ -115,11 +120,23 @@ public class ReportsController {
     private void handleRowClick() {
         Report selectedReport = reportsTable.getSelectionModel().getSelectedItem();
         if (selectedReport != null) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Report Content");
-            alert.setHeaderText("Details for Report ID: " + selectedReport.getReportId());
-            alert.setContentText(selectedReport.getReportContent());
-            alert.showAndWait();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML/ReportDetails.fxml"));
+                Parent root = loader.load();
+
+                // Pass the selected report details to the new controller
+                ReportDetailsController controller = loader.getController();
+                controller.setReportDetails(selectedReport);
+
+                // Load the new page
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Report Details");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 }

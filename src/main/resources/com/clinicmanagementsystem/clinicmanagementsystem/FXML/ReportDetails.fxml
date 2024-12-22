@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.clinicmanagementsystem.clinicmanagementsystem.ReportDetailsController" prefWidth="800" prefHeight="600">
+    <top>
+        <Label text="Report Details" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 20;" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+        <GridPane hgap="15" vgap="15" style="-fx-padding: 20;">
+            <!-- Row 0 -->
+            <Label text="Report ID:" style="-fx-font-size: 14px;" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <Label fx:id="reportIdLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+            <!-- Row 1 -->
+            <Label text="Appointment ID:" style="-fx-font-size: 14px;" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <Label fx:id="appointmentIdLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+            <!-- Row 2 -->
+            <Label text="Doctor Name:" style="-fx-font-size: 14px;" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+            <Label fx:id="doctorNameLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+            <!-- Row 3 -->
+            <Label text="Patient Name:" style="-fx-font-size: 14px;" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            <Label fx:id="patientNameLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+            <!-- Row 4 -->
+            <Label text="Created At:" style="-fx-font-size: 14px;" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+            <Label fx:id="createdAtLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+            <!-- Row 5 -->
+            <Label text="Report Content:" style="-fx-font-size: 14px;" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+            <TextArea fx:id="reportContentLabel" editable="false" wrapText="true" style="-fx-font-size: 14px;" prefHeight="200" GridPane.rowIndex="5" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+            <Button text="Close" onAction="#handleCloseButton" style="-fx-font-size: 14px;" />
+        </HBox>
+    </bottom>
+</BorderPane>
